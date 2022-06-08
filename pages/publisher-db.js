@@ -1,8 +1,31 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import PublisherDBTableRow from '../components/PublisherDBTableRow'
 import HeadComponent from '../components/HeadComponent'
+import { useAuthContext } from '../context/Auth'
+import { collection, onSnapshot, query } from 'firebase/firestore'
+import { db } from '../context/firebase_config'
 
 const PublisherDatabase = () => {
+	const [data, setData] = useState()
+	const { user } = useAuthContext()
+	useEffect(() => {
+		if (user) {
+			const q = query(collection(db, "publisher_kyc"));
+			const unsubscribe = onSnapshot(q, (querySnapshot) => {
+				const arr = [];
+				querySnapshot.forEach((doc) => {
+					let newData = doc.data()
+					newData.id = doc.id
+					arr.push(newData);
+				});
+				console.log(arr)
+				setData(arr)
+			});
+			return () => {
+				unsubscribe()
+			};
+		}
+	}, [user]);
 	return (
 		<>
 			<HeadComponent title={'Publisher Database'} />
@@ -21,11 +44,11 @@ const PublisherDatabase = () => {
 							</tr>
 						</thead>
 						<tbody className='mt-3'>
-							<PublisherDBTableRow />
-							<PublisherDBTableRow />
-							<PublisherDBTableRow />
-							<PublisherDBTableRow />
-							<PublisherDBTableRow />
+							{
+								data && data.map((item) => {
+									return <PublisherDBTableRow key={item.id} data={item} />
+								})
+							}
 						</tbody>
 					</table>
 				</div>
@@ -46,11 +69,11 @@ const PublisherDatabase = () => {
 							</tr>
 						</thead>
 						<tbody className='mt-3'>
-							<PublisherDBTableRow />
-							<PublisherDBTableRow />
-							<PublisherDBTableRow />
-							<PublisherDBTableRow />
-							<PublisherDBTableRow />
+							{
+								data && data.map((item) => {
+									return <PublisherDBTableRow key={data.id} data={item} />
+								})
+							}
 						</tbody>
 					</table>
 				</div>
