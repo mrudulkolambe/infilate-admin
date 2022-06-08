@@ -5,25 +5,43 @@ import ReportManagerTableRow from '../components/ReportManagerTableRow'
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { read, utils } from 'xlsx';
+import { addDoc, collection } from 'firebase/firestore'
+import { db } from '../context/firebase_config'
+import Spinner from '../components/Spinner';
+import { useReportData } from '../context/reportData';
 
 const ReportManager = () => {
 	const fileRef = useRef()
 	const [value, onChange] = useState(new Date());
 	const [files, setFiles] = useState()
+	const [xlsxData, setXlsxData] = useState()
+	const [loading, setLoading] = useState(false)
+	const { reportData } = useReportData()
 	useEffect(() => {
 		if (files) {
+			setLoading(true)
 			const fileReader = new FileReader()
 			fileReader.readAsBinaryString(files)
 			fileReader.onload = (event) => {
 				const data = event.target.result
 				const workbook = read(data, { type: "binary" });
 				workbook.SheetNames.forEach((sheet) => {
-					const rowObj = utils.sheet_to_row_object_array(workbook.Sheets[sheet])
-					console.log(rowObj)
+					let header = ['campaign_name', 'publisher_name', 'clicks', 'conversion', 'payout_per_conversion', 'total']
+					const rowObj = utils.sheet_to_row_object_array(workbook.Sheets[sheet], { header: header })
+					setXlsxData(rowObj)
 				})
 			}
 		}
 	}, [files]);
+
+	useEffect(() => {
+		xlsxData && xlsxData.forEach(async (data, i) => {
+			if (i !== 0) {
+				await addDoc(collection(db, "report_data"), data)
+			}
+		})
+		setLoading(false)
+	}, [xlsxData]);
 	return (
 		<>
 			<HeadComponent title={'Report Manager'} />
@@ -35,11 +53,11 @@ const ReportManager = () => {
 						<BsSearch className='absolute right-2 ml-3' />
 					</div>
 				</div>
-				<Calendar returnValue='range' selectRange={true} onChange={onChange} value={value} />
+				{/* <Calendar returnValue='range' selectRange={true} onChange={onChange} value={value} /> */}
 				<div className='flex justify-between items-center px-4 mt-4'>
 					<input type="text" className='border outline-none px-4 py-2 pr-8 ml-4' placeholder='Search...' />
 					<input ref={fileRef} onChange={(e) => { setFiles(e.target.files[0]) }} type="file" className='hidden' accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
-					<button onClick={() => { fileRef.current.click() }} className='bg-gray-900 text-white font-bold rounded-lg px-3 py-1 hover:bg-gray-700'>Upload Data</button>
+					<button onClick={() => { fileRef.current.click() }} className='bg-gray-900 text-white font-bold rounded-lg px-3 py-1 hover:bg-gray-700'>{loading ? <Spinner /> : 'Upload Data'}</button>
 				</div>
 				<div className='mt-10 w-full'>
 					<table className='w-full text-left'>
@@ -56,11 +74,11 @@ const ReportManager = () => {
 							</tr>
 						</thead>
 						<tbody className='mt-3 height-report overflow-auto'>
-							<ReportManagerTableRow />
-							<ReportManagerTableRow />
-							<ReportManagerTableRow />
-							<ReportManagerTableRow />
-							<ReportManagerTableRow />
+							{
+								reportData && reportData.map((data, i) => {
+									return <ReportManagerTableRow key={i} index={i} data={data} />
+								})
+							}
 						</tbody>
 					</table>
 				</div>
@@ -78,7 +96,7 @@ const ReportManager = () => {
 				<div className='flex justify-between md:items-center flex-col md:flex-row px-4 mt-8'>
 					<input type="text" className='border outline-none px-4 py-2' placeholder='Search...' />
 					<input ref={fileRef} onChange={(e) => { setFiles(e.target.files[0]) }} type="file" className='hidden' accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
-					<button onClick={() => { fileRef.current.click() }} className='md:mt-0 mt-4 w-max bg-gray-900 text-white font-bold rounded-lg px-3 py-1 hover:bg-gray-700'>Upload Data</button>
+					<button onClick={() => { fileRef.current.click() }} className='md:mt-0 mt-4 w-max bg-gray-900 text-white font-bold rounded-lg px-3 py-1 hover:bg-gray-700'>{loading ? <Spinner /> : 'Upload Data'}</button>
 				</div>
 				<div className='mt-10 w-full overflow-x-auto'>
 					<table className='w-full text-left'>
@@ -95,11 +113,11 @@ const ReportManager = () => {
 							</tr>
 						</thead>
 						<tbody className='mt-3 height-report overflow-auto'>
-							<ReportManagerTableRow />
-							<ReportManagerTableRow />
-							<ReportManagerTableRow />
-							<ReportManagerTableRow />
-							<ReportManagerTableRow />
+							{
+								reportData && reportData.map((data, i) => {
+									return <ReportManagerTableRow key={i} index={i} data={data} />
+								})
+							}
 						</tbody>
 					</table>
 				</div>

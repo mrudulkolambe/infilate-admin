@@ -2,6 +2,10 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import Sidebar from '../components/Sidebar'
 import Topbar from '../components/Topbar'
+import { AuthContextProvider } from '../context/Auth'
+import { CampaignUploadProvider } from '../context/campaignUpload'
+import { EmployeeAccessProvider } from '../context/employeeAccess'
+import { ReportDataProvider } from '../context/reportData'
 import '../styles/globals.css'
 import '../styles/Main.css'
 
@@ -26,10 +30,18 @@ function MyApp({ Component, pageProps }) {
   }, []);
   return (
     <>
-      <Sidebar setShow={setShow} />
-      <Topbar show={show} setShow={setShow} />
-      <div className={shifting ? 'opacity-100 fixed top-20 left-position w-10/12 calc-height bg-white zindex2000 duration-300' : 'pointer-events-none opacity-0 fixed top-20 left-position w-10/12 calc-height bg-white zindex2000 duration-300'}></div>
-      <Component {...pageProps} />
+      <AuthContextProvider>
+        <CampaignUploadProvider>
+          <ReportDataProvider>
+            <EmployeeAccessProvider>
+              <Sidebar setShow={setShow} />
+              <Topbar show={show} setShow={setShow} />
+              <div className={shifting ? 'opacity-100 fixed top-20 left-position w-10/12 calc-height bg-white zindex2000 duration-300' : 'pointer-events-none opacity-0 fixed top-20 left-position w-10/12 calc-height bg-white zindex2000 duration-300'}></div>
+              <Component {...pageProps} />
+            </EmployeeAccessProvider>
+          </ReportDataProvider>
+        </CampaignUploadProvider>
+      </AuthContextProvider>
     </>
   )
 }

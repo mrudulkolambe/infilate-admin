@@ -1,15 +1,47 @@
-import React, { useState } from 'react'
+import { doc, updateDoc } from 'firebase/firestore';
+import React, { useState, useEffect } from 'react'
+import { db } from '../context/firebase_config';
+import EmployeeSwitch from './EmployeeSwitch'
 
-const EmployeeAccessSwitch = ({ label, checked }) => {
-	const [bool, setBool] = useState(checked)
+const EmployeeAccessSwitch = ({ data, id }) => {
+	useEffect(() => {
+		setCampaignUpload(data && data.campaign_upload)
+		setEmailerSoftware(data && data.emailer_software)
+		setPaymentWallet(data && data.payment_wallet)
+		setReportManager(data && data.report_manager)
+		setTrackingPanel(data && data.tracking_panel)
+		setPublisherDatabase(data && data.publisher_database)
+	}, [data]);
+	const [campaignUpload, setCampaignUpload] = useState(data && data.campaign_upload)
+	const [emailerSoftware, setEmailerSoftware] = useState(data && data.emailer_software)
+	const [paymentWallet, setPaymentWallet] = useState(data && data.payment_wallet)
+	const [reportManager, setReportManager] = useState(data && data.report_manager)
+	const [trackingPanel, setTrackingPanel] = useState(data && data.tracking_panel)
+	const [publisherDatabase, setPublisherDatabase] = useState(data && data.publisher_database)
+
+	useEffect(() => {
+		const docRef = doc(db, "employee_access", id);
+		updateDoc(docRef, {
+			campaign_upload: campaignUpload,
+			emailer_software: emailerSoftware,
+			payment_wallet: paymentWallet,
+			report_manager: reportManager,
+			tracking_panel: trackingPanel,
+			publisher_database: publisherDatabase
+		})
+			.then(() => {
+				console.log(`${id} document updated`)
+			})
+	}, [campaignUpload, emailerSoftware, paymentWallet, reportManager, trackingPanel, publisherDatabase]);
+
 	return (
 		<>
-			<div className='flex items-center my-4'>
-				<div className='font-bold mr-3'>{label}</div>
-				<div onClick={() => { bool ? setBool(false) : setBool(true) }} className={bool ? 'cursor-pointer relative flex items-center w-10 h-6 bg-blue-500 rounded-full px-1 duration-300' : 'cursor-pointer relative flex items-center w-10 h-6 bg-gray-300 rounded-full px-1 duration-300'}>
-					<div className={bool ? 'duration-300 switchOn absolute w-4 h-4 rounded-full bg-white' : ' duration-300 switchOff absolute w-4 h-4 rounded-full bg-white'}></div>
-				</div>
-			</div>
+			<EmployeeSwitch label={'Campaign Upload'} checked={campaignUpload} setChecker={setCampaignUpload} />
+			<EmployeeSwitch label={'Emailer Software'} checked={emailerSoftware} setChecker={setEmailerSoftware} />
+			<EmployeeSwitch label={'Payment Wallet'} checked={paymentWallet} setChecker={setPaymentWallet} />
+			<EmployeeSwitch label={'Report Manager'} checked={reportManager} setChecker={setReportManager} />
+			<EmployeeSwitch label={'Tracking Panel'} checked={trackingPanel} setChecker={setTrackingPanel} />
+			<EmployeeSwitch label={'Publisher Dashboard'} checked={publisherDatabase} setChecker={setPublisherDatabase} />
 		</>
 	)
 }
