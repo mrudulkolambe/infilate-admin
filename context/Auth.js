@@ -112,7 +112,6 @@ export function AuthContextProvider({ children }) {
 			});
 	}
 
-
 	useEffect(() => {
 		if (alert.length !== 0) {
 			setTimeout(() => {

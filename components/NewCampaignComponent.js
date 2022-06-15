@@ -1,10 +1,14 @@
 import React, { useState } from 'react'
 import { MdOutlineClose } from 'react-icons/md'
 import Spinner from './Spinner'
-import { addDoc, collection } from 'firebase/firestore'
+import { addDoc, collection, doc, updateDoc } from 'firebase/firestore'
 import { db } from '../context/firebase_config'
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { useAuthContext } from '../context/Auth'
 
 const NewCampaignComponent = ({ setDisplayCampaign }) => {
+	const storage = getStorage();
+	const {user} = useAuthContext()
 	const initialState = {
 		campaign_name: "",
 		advertiser_name: "",
@@ -16,9 +20,11 @@ const NewCampaignComponent = ({ setDisplayCampaign }) => {
 		terms: '',
 		campaign_brief: "",
 		tracking_information: "",
-		traffic_source: ""
+		traffic_source: "",
+		img: ''
 	}
 	const [formData, setFormData] = useState(initialState)
+	const [files, setFiles] = useState()
 	const [loading, setLoading] = useState(false)
 	const handleChange = (evt) => {
 		const value = evt.target.value;
@@ -28,13 +34,48 @@ const NewCampaignComponent = ({ setDisplayCampaign }) => {
 		});
 	}
 	const handleClick = async () => {
-		setLoading(true)
-		const docRef = await addDoc(collection(db, "campaign_data"), formData)
-			.then(() => {
-				console.log("first")
-				setLoading(false)
-				setFormData(initialState)
-			})
+		if (files && user) {
+			setLoading(true)
+			const docRef = await addDoc(collection(db, "campaign_data"), formData)
+				.then((document) => {
+					console.log("first")
+					setLoading(false)
+					setFormData(initialState)
+					handleUpload(document.id)
+				})
+		}
+	}
+	const handleUpload = (id) => {
+		if (user) {
+			const storageRef = ref(storage, `campaign/${id}.jpg`);
+			console.log(storageRef)
+			const uploadTask = uploadBytesResumable(storageRef, files);
+			uploadTask.on('state_changed',
+				(snapshot) => {
+					const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+					console.log('Upload is ' + progress + '% done');
+					switch (snapshot.state) {
+						case 'paused':
+							console.log('Upload is paused');
+							break;
+						case 'running':
+							console.log('Upload is running');
+							break;
+					}
+				},
+				(error) => {
+					// Handle unsuccessful uploads
+				},
+				() => {
+					getDownloadURL(uploadTask.snapshot.ref).then( async (downloadURL) => {
+						const docRef = doc(db, "campaign_data", id);
+						await updateDoc(docRef, {
+							img: downloadURL
+						});
+					});
+				}
+			);
+		}
 	}
 
 	return (
@@ -77,7 +118,7 @@ const NewCampaignComponent = ({ setDisplayCampaign }) => {
 						<div className='w-6/12 p-4'>
 							<div className='my-3'>
 								<label htmlFor='campaignLogo' className='font-bold text-gray-600 cursor-pointer'>Campaign Logo</label>
-								<input id='campaignLogo' name='campaign_logo' className='w-full mt-1 outline-none h-12 py-2 px-5 border border-gray-500 font-semibold rounded-lg bg-white' type="file" placeholder='Enter Campaign Name' />
+								<input id='campaignLogo' name='campaign_logo' className='w-full mt-1 outline-none h-12 py-2 px-5 border border-gray-500 font-semibold rounded-lg bg-white' type="file" onChange={(e) => { setFiles(e.target.files[0]) }} placeholder='Enter Campaign Name' />
 							</div>
 							<div className='my-3'>
 								<label htmlFor='offerCategory' className='font-bold text-gray-600 cursor-pointer'>Offer Category</label>

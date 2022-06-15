@@ -1,7 +1,16 @@
 import React from 'react'
 import { GrClose } from 'react-icons/gr'
+import { doc, updateDoc } from 'firebase/firestore'
+import { db } from '../context/firebase_config'
+
 
 const PublisherDBDetailsModal = ({ display, setDisplay, data }) => {
+	const handleApprove = async () => {
+		const docRef = doc(db, "publisher_kyc", data && data.id);
+		await updateDoc(docRef, {
+			status: 'Approved'
+		});
+	}
 	return (
 		<>
 			<div className={display ? 'opacity-100 duration-300 h-screen w-screen bg-black bg-opacity-30 fixed top-0 left-0 zindex1000' : 'opacity-0 pointer-events-none duration-300 h-screen w-screen bg-black bg-opacity-10 fixed top-0 left-0 zindex1000'}></div>
@@ -15,7 +24,7 @@ const PublisherDBDetailsModal = ({ display, setDisplay, data }) => {
 						<div className='w-full mt-4 font-bold text-lg'>
 							{data && data.name}
 						</div>
-						<button className='px-3 py-1 bg-gray-900 text-white font-bold hover:bg-gray-700 duration-200 rounded-lg mt-2'>Approve KYC</button>
+						<button onClick={handleApprove} className='px-3 py-1 bg-gray-900 text-white font-bold hover:bg-gray-700 duration-200 rounded-lg mt-2'>Approve KYC</button>
 					</div>
 					<div className='w-2/3 px-4'>
 						<div className='text-left w-11/12 mt-2 font-bold text-lg'>
