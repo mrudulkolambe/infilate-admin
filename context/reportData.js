@@ -12,7 +12,7 @@ export function ReportDataProvider({ children }) {
 
 	useEffect(() => {
 		if (user) {
-			const q = query(collection(db, "report_data"));
+			const q = query(collection(db, "campaign_details"));
 			const unsubscribe = onSnapshot(q, (querySnapshot) => {
 				const data = [];
 				querySnapshot.forEach((doc) => {

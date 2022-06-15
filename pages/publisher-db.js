@@ -18,7 +18,6 @@ const PublisherDatabase = () => {
 					newData.id = doc.id
 					arr.push(newData);
 				});
-				console.log(arr)
 				setData(arr)
 			});
 			return () => {
@@ -29,7 +28,7 @@ const PublisherDatabase = () => {
 	return (
 		<>
 			<HeadComponent title={'Publisher Database'} />
-			<div className='hidden lg:block left-position absolute top-20 px-5 py-6 Nunito w-10/12'>
+			<div className='hidden lg:block left-position absolute top-24 mt-2 px-5 py-6 Nunito w-10/12 h-calc-height overflow-scroll'>
 				<h2 className='text-4xl font-bold'>Publisher Database</h2>
 				<div className='mt-10 w-full'>
 					<table className='w-full text-center'>

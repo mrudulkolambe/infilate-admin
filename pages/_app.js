@@ -8,6 +8,7 @@ import { EmployeeAccessProvider } from '../context/employeeAccess'
 import { ReportDataProvider } from '../context/reportData'
 import '../styles/globals.css'
 import '../styles/Main.css'
+import {MainContextProvider } from '../context/Main'
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter()
@@ -31,16 +32,19 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <AuthContextProvider>
-        <CampaignUploadProvider>
-          <ReportDataProvider>
-            <EmployeeAccessProvider>
-              <Sidebar setShow={setShow} />
-              <Topbar show={show} setShow={setShow} />
-              <div className={shifting ? 'opacity-100 fixed top-20 left-position w-10/12 calc-height bg-white zindex2000 duration-300' : 'pointer-events-none opacity-0 fixed top-20 left-position w-10/12 calc-height bg-white zindex2000 duration-300'}></div>
-              <Component {...pageProps} />
-            </EmployeeAccessProvider>
-          </ReportDataProvider>
-        </CampaignUploadProvider>
+        <MainContextProvider>
+          <CampaignUploadProvider>
+            <ReportDataProvider>
+              <EmployeeAccessProvider>
+                <div className='fixed top-0 left-0 w-full bg-gradient-top h-20 -z-20'></div>
+                <Sidebar setShow={setShow} />
+                <Topbar show={show} setShow={setShow} />
+                <div className={shifting ? 'opacity-100 fixed top-20 left-position w-10/12 calc-height bg-white zindex2000 duration-300' : 'pointer-events-none opacity-0 fixed top-20 left-position w-10/12 calc-height bg-white zindex2000 duration-300'}></div>
+                <Component {...pageProps} />
+              </EmployeeAccessProvider>
+            </ReportDataProvider>
+          </CampaignUploadProvider>
+        </MainContextProvider>
       </AuthContextProvider>
     </>
   )

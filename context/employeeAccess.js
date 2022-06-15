@@ -44,7 +44,6 @@ export function EmployeeAccessProvider({ children }) {
 	const [messenger, setMessenger] = useState(initialAccess)
 	useEffect(() => {
 		if (user) {
-			console.log(user)
 			const q = query(collection(db, "employee_access"), orderBy('campaign_upload'));
 			const unsubscribe = onSnapshot(q, (querySnapshot) => {
 				const data = [];

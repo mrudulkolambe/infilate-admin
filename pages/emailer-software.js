@@ -5,7 +5,7 @@ const EmailerSoftware = () => {
 	return (
 		<>
 			<HeadComponent title={'Emailer Software'} />
-			<div className='hidden lg:flex left-position absolute top-20 px-5 py-6 Nunito w-10/12 justify-center items-center calc-height'>
+			<div className='hidden lg:flex left-position absolute top-24 mt-2 px-5 py-6 Nunito w-10/12 justify-center items-center calc-height'>
 				<div className='w-6/12 shadow-lg p-5 rounded-lg'>
 					<div className='flex flex-col items-start mt-3'>
 						<label htmlFor='receipients' className='font-bold text-gray-600 cursor-pointer'>Receipients</label>

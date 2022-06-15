@@ -21,17 +21,19 @@ const EmployeeAccessSwitch = ({ data, id }) => {
 
 	useEffect(() => {
 		const docRef = doc(db, "employee_access", id);
-		updateDoc(docRef, {
-			campaign_upload: campaignUpload,
-			emailer_software: emailerSoftware,
-			payment_wallet: paymentWallet,
-			report_manager: reportManager,
-			tracking_panel: trackingPanel,
-			publisher_database: publisherDatabase
-		})
-			.then(() => {
-				console.log(`${id} document updated`)
+		if (campaignUpload !== data && data.campaignUpload || emailerSoftware !== data.emailer_software || paymentWallet !== data.payment_wallet || reportManager !== data.report_manager || trackingPanel !== data.tracking_panel || publisherDatabase !== data.publisher_database) {
+			updateDoc(docRef, {
+				campaign_upload: campaignUpload,
+				emailer_software: emailerSoftware,
+				payment_wallet: paymentWallet,
+				report_manager: reportManager,
+				tracking_panel: trackingPanel,
+				publisher_database: publisherDatabase
 			})
+				.then(() => {
+					console.log(`${id} document updated`)
+				})
+		}
 	}, [campaignUpload, emailerSoftware, paymentWallet, reportManager, trackingPanel, publisherDatabase]);
 
 	return (

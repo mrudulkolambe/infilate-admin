@@ -39,7 +39,7 @@ const NewCampaignComponent = ({ setDisplayCampaign }) => {
 
 	return (
 		<>
-			<div className='lg:block hidden left-position absolute top-20 px-10 py-6 Nunito w-10/12 bg-white zindex2000'>
+			<div className='lg:block hidden left-position absolute top-24 mt-2 px-10 py-6 Nunito w-10/12 bg-white zindex2000'>
 				<h1 className='font-bold text-4xl'>Add Campaign</h1>
 				<div onClick={() => { setDisplayCampaign(false) }} className='cursor-pointer absolute top-4 right-12 w-max p-3 rounded-full hover:bg-gray-100 bg-opacity-25 duration-300'>
 					<MdOutlineClose />
@@ -132,7 +132,7 @@ const NewCampaignComponent = ({ setDisplayCampaign }) => {
 							<label htmlFor='campaignName' className='font-bold text-gray-600 cursor-pointer'>Traffic Source</label>
 							<textarea name='traffic_source' value={formData.traffic_source} onChange={handleChange} className='resize-y w-full mt-1 outline-none h-44 py-2 px-5 border border-gray-500 font-semibold rounded-lg bg-white' placeholder='Traffic Source'></textarea>
 						</div>
-						<button onClick={handleClick} className='px-4 py-2 rounded-lg bg-gray-900 text-white font-bold hover:bg-gray-700 duration-200 shadow-lg mt-4 m-auto'>{loading ? <Spinner /> : <p>Submit</p>}</button>
+						<button onClick={handleClick} disabled={loading} className='px-4 py-2 rounded-lg bg-gray-900 text-white font-bold hover:bg-gray-700 duration-200 shadow-lg mt-4 m-auto'>{loading ? <Spinner /> : <p>Submit</p>}</button>
 					</div>
 				</div>
 			</div>

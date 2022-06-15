@@ -1,4 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Nunito:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic");
+@import url('https://fonts.googleapis.com/css?family=Montserrat:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic');
+
 
 *, html, body{
     -webkit-tap-highlight-color: rgba(0,0,0,0);
@@ -6,6 +8,9 @@
 
 .Nunito {
   font-family: "Nunito", sans-serif;
+}
+.Montserrat {
+  font-family: "Montserrat", sans-serif;
 }
 .left-position {
   left: 16.66%;
@@ -27,4 +32,22 @@
 }
 .zindex2000 {
   z-index: 2000;
+}
+.h-calc-top{
+  height: calc(100vh - 1.5rem);
+  position: sticky;
+  top: 1.5rem;
+}
+.zindexMax{
+  z-index: 3000;
+}
+.bg-gradient-top{
+  background: linear-gradient(90deg, orange, red, blue);
+}
+.accent-color{
+  background-color: #030343;
+  color: white;
+}
+.h-calc-height{
+  height: calc(100vh - 7.5rem);
 }

@@ -22,7 +22,8 @@ export default function Home() {
       <Sidebar />
       <Topbar />
       <HeadComponent title={'Authentication'} />
-      <div className='hidden lg:flex left-position absolute top-20 px-5 py-6 Nunito w-10/12 justify-center items-center calc-height'>
+      <div className='top-6 absolute left-position w-full h-20 bg-white rounded-tr-3xl'></div>
+      <div className='bg-white hidden lg:flex left-position absolute top-24 mt-2 px-5 py-6 Nunito w-10/12 justify-center items-center calc-height'>
         <div className='w-6/12 shadow-lg p-5 rounded-lg border'>
           <h1 className="text-center font-bold text-3xl mb-6">Infilate Authentication</h1>
           <div className='flex flex-col items-start mt-3'>
@@ -34,7 +35,7 @@ export default function Home() {
             <input id='password' value={password} onChange={(e) => { setPassword(e.target.value) }} className='w-full mt-1 outline-none py-3 px-5 border border-gray-500 font-semibold rounded-lg' type="text" placeholder='********' />
           </div>
           <div>
-            <button onClick={signIn} className='flex items-center justify-center text-white font-bold bg-gray-900 duration-200 px-3 py-2 rounded-lg hover:bg-gray-700 mt-5 w-full'>{loading ? <Spinner /> : 'Sign In'}</button>
+            <button disabled={loading} onClick={signIn} className='flex items-center justify-center text-white font-bold bg-gray-900 duration-200 px-3 py-2 rounded-lg hover:bg-gray-700 mt-5 w-full'>{loading ? <Spinner /> : 'Sign In'}</button>
           </div>
         </div>
       </div>
@@ -51,7 +52,7 @@ export default function Home() {
             <input id='password' value={password} onChange={(e) => { setPassword(e.target.value) }} className='w-full mt-1 outline-none py-3 px-5 border border-gray-500 font-semibold rounded-lg' type="text" placeholder='********' />
           </div>
           <div>
-            <button onClick={signIn} className='text-white font-bold bg-gray-900 duration-200 px-3 py-2 rounded-lg hover:bg-gray-700 mt-3 w-full'>Send Mail</button>
+            <button disabled={loading} onClick={signIn} className='text-white font-bold bg-gray-900 duration-200 px-3 py-2 rounded-lg hover:bg-gray-700 mt-3 w-full'>{loading ? <Spinner/> : 'Sign Up'}</button>
           </div>
         </div>
       </div>

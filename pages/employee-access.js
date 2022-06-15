@@ -7,14 +7,14 @@ import { doc, setDoc } from 'firebase/firestore';
 import { useAuthContext } from '../context/Auth'
 import Spinner from '../components/Spinner'
 import { useEmployeeAccess } from '../context/employeeAccess';
+import Alert from '../components/Alert';
 
 const EmployeeAccess = () => {
 	const [tabPos, setTabPos] = useState('ad_manager');
 	const [loading, setLoading] = useState(false);
-	const { user } = useAuthContext()
+	const { user, showAlert, setShowAlert } = useAuthContext()
 	const { employeeAccess, ad_manager, setAd_manager, seo_manager, setSEO_manager, affiliate_manager, setAffiliate_manager, finance, setFinance, messenger, setMessenger } = useEmployeeAccess()
 	const initialAccess = [ad_manager, seo_manager, affiliate_manager, finance, messenger]
-	const [accessPos, setAccessPos] = useState()
 	const initialState = {
 		email: '',
 		password: '',
@@ -23,9 +23,6 @@ const EmployeeAccess = () => {
 	}
 	const [userData, setUserData] = useState(initialState)
 
-	useEffect(() => {
-		// setAccessPos(employeeAccess[tabPos])
-	}, [tabPos]);
 
 	const handleChange = (evt) => {
 		const value = evt.target.value;
@@ -38,7 +35,6 @@ const EmployeeAccess = () => {
 		setLoading(true)
 		createUserWithEmailAndPassword(secondaryAuth, userData.email, userData.password)
 			.then(async (userCredential) => {
-				console.log(`admin: ${user.email} user: ${userCredential.user.email}`)
 				const newUser = userCredential.user;
 				updateProfile(newUser, {
 					displayName: userData.name,
@@ -87,7 +83,8 @@ const EmployeeAccess = () => {
 	return (
 		<>
 			<HeadComponent title={'Employee Access'} />
-			<div className='left-position absolute top-20 px-5 py-6 Nunito w-10/12'>
+			{/* <Alert show={showAlert} /> */}
+			<div className='left-position absolute top-24 mt-2 px-5 py-6 Nunito w-10/12 h-calc-height overflow-scroll'>
 				<h2 className='text-4xl font-bold'>Employee Access </h2>
 				<div className='flex justify-between px-28 mt-10'>
 					{
@@ -98,7 +95,7 @@ const EmployeeAccess = () => {
 				</div>
 				<div className='mt-8 px-10'>
 					{
-						<EmployeeAccessSwitch data={employeeAccess && employeeAccess.filter(filterAccess)[0]} id={employeeAccess &&  employeeAccess.filter(filterAccess)[0] && employeeAccess.filter(filterAccess)[0].id}/>
+						<EmployeeAccessSwitch data={employeeAccess && employeeAccess.filter(filterAccess)[0]} id={employeeAccess && employeeAccess.filter(filterAccess)[0] && employeeAccess.filter(filterAccess)[0].id} />
 					}
 				</div>
 				<div className='w-6/12 mt-8'>
@@ -125,7 +122,7 @@ const EmployeeAccess = () => {
 						</select>
 					</div>
 					<div className='mt-4'>
-						<button type='button' onClick={handleClick} className='py-2 px-3 bg-gray-900 duration-200 rounded-lg text-white font-bold hover:bg-gray-700'>{loading ? <Spinner /> : 'Submit'}</button>
+						<button disabled={loading} type='button' onClick={handleClick} className='py-2 px-3 bg-gray-900 duration-200 rounded-lg text-white font-bold hover:bg-gray-700'>{loading ? <Spinner /> : 'Submit'}</button>
 					</div>
 				</div>
 			</div>

@@ -14,6 +14,7 @@ export function AuthContextProvider({ children }) {
 	const [user, setUser] = useState()
 	const [userAccessData, setUserAccessData] = useState()
 	const router = useRouter()
+	const [alert, setAlert] = useState('')
 	const navs = [
 		{
 			tab: 'Campaign Upload',
@@ -58,7 +59,7 @@ export function AuthContextProvider({ children }) {
 			setUser()
 			router.push('/')
 		}).catch((error) => {
-			// An error happened.
+			setAlert('Something went wrong!')
 		});
 	}
 	useEffect(() => {
@@ -72,11 +73,9 @@ export function AuthContextProvider({ children }) {
 				setRoutes(navs)
 			} else {
 				let data_access = userAccessData && userAccessData.toLowerCase().split(' ').join("_")
-				console.log(data_access)
 				const docRef = doc(db, "employee_access", data_access);
 				const docSnap = await getDoc(docRef);
 				navsItems = []
-				console.log(docSnap.data() && Object.entries(docSnap.data()).forEach(handleNavAccess))
 			}
 		}
 	}
@@ -89,7 +88,6 @@ export function AuthContextProvider({ children }) {
 				}
 			}
 		})
-		console.log(navsItems)
 		setRoutes(navsItems)
 		return navsItems
 	}
@@ -98,11 +96,9 @@ export function AuthContextProvider({ children }) {
 		signInWithEmailAndPassword(auth, email, password)
 			.then((userCredential) => {
 				const user = userCredential.user;
-				console.log(user)
 				setUser(user)
 				const unsub = onSnapshot(doc(db, "employee_details", user.uid), (doc) => {
 					if (doc.data()) {
-						console.log(doc.data())
 						setUserAccessData(doc.data().type)
 					}
 					else {
@@ -112,14 +108,21 @@ export function AuthContextProvider({ children }) {
 				router.push('/campaign-upload')
 			})
 			.catch((error) => {
-				const errorCode = error.code;
-				const errorMessage = error.message;
-				console.log(error)
+				setAlert(error.message)
 			});
 	}
 
+
+	useEffect(() => {
+		if (alert.length !== 0) {
+			setTimeout(() => {
+				setAlert('')
+			}, 3000);
+		}
+	}, [alert]);
+
 	return (
-		<AuthContext.Provider value={{ auth, handleSignIn, user, handleSignOut, userAccessData, routes }}>
+		<AuthContext.Provider value={{ auth, handleSignIn, user, handleSignOut, userAccessData, routes, alert, setAlert }}>
 			{children}
 		</AuthContext.Provider>
 	);

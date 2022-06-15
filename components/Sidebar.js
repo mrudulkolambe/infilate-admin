@@ -1,26 +1,30 @@
 import React, { useState } from "react";
 import { FaRegLifeRing, FaBars } from "react-icons/fa";
 import { useAuthContext } from "../context/Auth";
-import Link from 'next/link'
+import InfilateLogo from "./InfilateLogo";
+import { useRouter } from 'next/router'
+import Alert from "./Alert";
 
 const Sidebar = ({ setShow }) => {
   const [showMenu, setShowMenu] = useState(false);
-  const { user } = useAuthContext()
+  const { user, handleSignOut, alert } = useAuthContext()
+  const router = useRouter()
   return (
     <>
-      <div className="lg:block hidden fixed w-2/12 bg-white border-r shadow-xl h-screen p-3 pt-0 Nunito">
+      <Alert text={alert} />
+      <div className="lg:block hidden fixed w-2/12 bg-white border-r top-6 shadow-xl h-screen p-3 pt-0 rounded-tl-3xl overflow-hidden">
         <div className="flex items-center h-20 justify-center">
-          <h1 className="font-bold text-5xl text-center">infilate</h1>
+          <h1 className="font-bold text-5xl text-center"><InfilateLogo /></h1>
         </div>
         <div>
-          <div className="flex flex-col items-center mt-8">
+          <div className="flex flex-col items-center mt-8 Nunito">
             <img
               className="h-40 w-40 rounded-lg"
               src={user && user.photoURL || "https://png.pngtree.com/png-clipart/20190520/original/pngtree-vector-users-icon-png-image_4144740.jpg"}
             />
             <h2 className="mt-3 font-bold">{user && user.email}</h2>
             {
-              user ? <button className="w-7/12 font-bold py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-700 duration-200 mt-5">
+              user ? <button onClick={() => { router.push('/profile-edit') }} className="w-7/12 font-bold py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-700 duration-200 mt-5">
                 Edit
               </button> : null
             }
@@ -28,10 +32,21 @@ const Sidebar = ({ setShow }) => {
               <FaRegLifeRing />
               <p className="ml-2">Support</p>
             </button>
-            {user ? <button className="w-7/12 font-bold py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 duration-200 mt-4">
+            {user ? <button onClick={handleSignOut} className="w-7/12 font-bold py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 duration-200 mt-4">
               Logout
             </button>
-              :null
+              : null
+            }
+            {
+              user ?
+                <button onClick={() => { router.push('/notifications') }} className="relative font-bold text-white bg-gray-900 duration-200 hover:bg-gray-700 px-3 py-2 rounded-lg w-7/12 mt-3">
+                  <p>Notifications</p>
+                  <span class="hidden h-3 w-3 absolute -top-1">
+                    <span class="animate-ping inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span class="inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                  </span>
+                </button>
+                : null
             }
           </div>
         </div>
