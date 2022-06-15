@@ -41,9 +41,9 @@ const Sidebar = ({ setShow }) => {
               user ?
                 <button onClick={() => { router.push('/notifications') }} className="relative font-bold text-white bg-gray-900 duration-200 hover:bg-gray-700 px-3 py-2 rounded-lg w-7/12 mt-3">
                   <p>Notifications</p>
-                  <span class="hidden h-3 w-3 absolute -top-1">
-                    <span class="animate-ping inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                    <span class="inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                  <span className="hidden h-3 w-3 absolute -top-1">
+                    <span className="animate-ping inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span className="inline-flex rounded-full h-3 w-3 bg-red-500"></span>
                   </span>
                 </button>
                 : null
