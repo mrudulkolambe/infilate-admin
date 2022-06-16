@@ -41,10 +41,13 @@ const Sidebar = ({ setShow }) => {
               user ?
                 <button onClick={() => { router.push('/notifications') }} className="relative font-bold text-white bg-gray-900 duration-200 hover:bg-gray-700 px-3 py-2 rounded-lg w-7/12 mt-3">
                   <p>Notifications</p>
-                  <span className="hidden h-3 w-3 absolute -top-1">
-                    <span className="animate-ping inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                    <span className="inline-flex rounded-full h-3 w-3 bg-red-500"></span>
-                  </span>
+                </button>
+                : null
+            }
+            {
+              user ?
+                <button onClick={() => { router.push('/poc') }} className="relative font-bold text-white bg-gray-900 duration-200 hover:bg-gray-700 px-3 py-2 rounded-lg w-7/12 mt-3">
+                  <p>POC</p>
                 </button>
                 : null
             }
@@ -65,8 +68,18 @@ const Sidebar = ({ setShow }) => {
               <p className="ml-2">Support</p>
             </button>
             {
-              user ? <button className="w-full font-bold py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 duration-200 mt-0">
+              user ? <button onClick={handleSignOut} className="w-full font-bold py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 duration-200 mt-0">
                 Logout
+              </button> : null
+            }
+            {
+              user ? <button onClick={() => { router.push('/notifications') }} className="mt-2 w-full font-bold py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 duration-200 ">
+                Notifications
+              </button> : null
+            }
+            {
+              user ? <button onClick={() => { router.push('/poc') }} className="mt-2 w-full font-bold py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 duration-200 ">
+                POC
               </button> : null
             }
           </div>

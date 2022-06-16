@@ -3,7 +3,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { auth, db } from "./firebase_config";
 import { secondaryAuth } from "./firebase_config2";
 import { useRouter } from "next/router";
-import { doc, getDoc, onSnapshot } from "firebase/firestore";
+import { doc, getDoc, onSnapshot, setDoc } from "firebase/firestore";
 
 
 
@@ -120,8 +120,18 @@ export function AuthContextProvider({ children }) {
 		}
 	}, [alert]);
 
+	const POCFunc = async (email, phone, name) => {
+		await setDoc(doc(db, "POC", "POC"), {
+			name: name,
+			phone: phone,
+			country: email
+		})
+		.then(() => {
+			setAlert('Data Added')
+		})
+	}
 	return (
-		<AuthContext.Provider value={{ auth, handleSignIn, user, handleSignOut, userAccessData, routes, alert, setAlert }}>
+		<AuthContext.Provider value={{ auth, handleSignIn, user, handleSignOut, userAccessData, routes, alert, setAlert, POCFunc }}>
 			{children}
 		</AuthContext.Provider>
 	);

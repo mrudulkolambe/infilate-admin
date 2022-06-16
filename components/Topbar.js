@@ -15,6 +15,7 @@ const Topbar = ({ show, setShow }) => {
 		validPaths.push('/')
 		validPaths.push('/profile-edit')
 		validPaths.push('/notifications')
+		validPaths.push('/poc')
 		if (!validPaths.includes(router.pathname)) {
 			router.push(validPaths[0])
 		}
