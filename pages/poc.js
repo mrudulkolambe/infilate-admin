@@ -5,7 +5,7 @@ import Topbar from "../components/Topbar";
 import { useAuthContext } from "../context/Auth";
 import Link from 'next/link'
 
-export default function poc() {
+export default function Poc() {
 	const { POCFunc } = useAuthContext()
 	const [email, setEmail] = useState("");
 	const [phone, setPhone] = useState("");
