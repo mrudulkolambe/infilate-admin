@@ -48,7 +48,7 @@ const BankerMarket = () => {
         <div className={tab === 0 ? 'mt-8 gap-y-6 flex flex-col' : 'hidden'}>
           {
             approveData && approveData.map((data, i) => {
-              return <BankerMarketApprove id={i} setTab={setTab} setCurrentPublisher={setCurrentPublisher} data={data} />
+              return <BankerMarketApprove key={i} setTab={setTab} setCurrentPublisher={setCurrentPublisher} data={data} />
             })
           }
         </div>
