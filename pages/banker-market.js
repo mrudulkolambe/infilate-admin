@@ -47,15 +47,15 @@ const BankerMarket = () => {
         </div>
         <div className={tab === 0 ? 'mt-8 gap-y-6 flex flex-col' : 'hidden'}>
           {
-            approveData && approveData.map((data) => {
-              return <BankerMarketApprove setTab={setTab} setCurrentPublisher={setCurrentPublisher} data={data} />
+            approveData && approveData.map((data, i) => {
+              return <BankerMarketApprove id={i} setTab={setTab} setCurrentPublisher={setCurrentPublisher} data={data} />
             })
           }
         </div>
         <div className={tab === 1 ? 'mt-8 gap-y-6 grid grid-cols-3' : 'hidden'}>
           {
             campaignData && campaignData.map((data) => {
-              return <CampaignTrackingLink adminData={adminData} currentPublisher={currentPublisher} data={data} />
+              return <CampaignTrackingLink key={data.id} adminData={adminData} currentPublisher={currentPublisher} data={data} />
             })
           }
         </div>
