@@ -44,6 +44,10 @@ const BankerMarketApprove = ({ data, setCurrentPublisher, setTab }) => {
 						setCurrentPublisher(data.uid)
 						setTab(1)
 					}} className={data && data.banker ? 'my-2 mr-12 py-1 px-4 bg-gray-900 hover:bg-gray-700 duration-300 rounded-lg text-white font-bold' : 'hidden'}>Update Campaign Data</button>
+					<button onClick={() => {
+						setCurrentPublisher(data.uid)
+						setTab(2)
+					}} className={data && data.banker ? 'mb-2 mr-12 py-1 px-4 bg-gray-900 hover:bg-gray-700 duration-300 rounded-lg text-white font-bold' : 'hidden'}>Customer Data</button>
 				</div>
 			</div>
 		</>

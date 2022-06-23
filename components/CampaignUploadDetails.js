@@ -10,7 +10,7 @@ const CampaignUploadDetails = ({ setDisplayCard, data }) => {
 				<div className='flex mt-6 sticky'>
 					<div className='px-2 w-3/12'>
 						<div className='flex flex-col items-center'>
-							<img className='h-5/6 w-5/6' src="https://png.pngtree.com/png-clipart/20190520/original/pngtree-vector-users-icon-png-image_4144740.jpg" alt="" />
+							<img className='h-5/6 w-5/6' src={data && data.img} alt="" />
 							<h1 className='mt-2 text-3xl font-bold text-center'>{data && data.campaign_name}</h1>
 						</div>
 					</div>

@@ -21,7 +21,11 @@ const NewCampaignComponent = ({ setDisplayCampaign }) => {
 		campaign_brief: "",
 		tracking_information: "",
 		traffic_source: "",
-		img: ''
+		img: '',
+		campaign_category: '',
+		POCNAME: '',
+		POCEMAIL: '',
+		POCPHONE: ''
 	}
 	const [formData, setFormData] = useState(initialState)
 	const [files, setFiles] = useState()
@@ -80,7 +84,7 @@ const NewCampaignComponent = ({ setDisplayCampaign }) => {
 
 	return (
 		<>
-			<div className='lg:block hidden left-position absolute top-24 mt-2 px-10 py-6 Nunito w-10/12 bg-white zindex2000'>
+			<div className='lg:block hidden left-position absolute top-24 mt-2 px-10 py-6 Nunito w-10/12 bg-white zindex2000 h-calc-height overflow-scroll'>
 				<h1 className='font-bold text-4xl'>Add Campaign</h1>
 				<div onClick={() => { setDisplayCampaign(false) }} className='cursor-pointer absolute top-4 right-12 w-max p-3 rounded-full hover:bg-gray-100 bg-opacity-25 duration-300'>
 					<MdOutlineClose />
@@ -95,6 +99,14 @@ const NewCampaignComponent = ({ setDisplayCampaign }) => {
 							<div className='my-3'>
 								<label htmlFor='advertiserName' className='font-bold text-gray-600 cursor-pointer'>Advertiser Name</label>
 								<input id='advertiserName' value={formData.advertiser_name} onChange={handleChange} name='advertiser_name' className='w-full mt-1 outline-none py-3 px-5 border border-gray-500 font-semibold rounded-lg' type="text" placeholder='Enter Advertiser Name' />
+							</div>
+							<div className='my-3'>
+								<label htmlFor='category' className='font-bold text-gray-600 cursor-pointer'>Category</label>
+								<input id='category' value={formData.campaign_category} onChange={handleChange} name='campaign_category' className='w-full mt-1 outline-none py-3 px-5 border border-gray-500 font-semibold rounded-lg' type="text" placeholder='Enter Campaign Category' />
+							</div>
+							<div className='my-3'>
+								<label htmlFor='pocContact' className='font-bold text-gray-600 cursor-pointer'>POC Contact</label>
+								<input id='pocContact' value={formData.POCPHONE} onChange={handleChange} name='POCPHONE' className='w-full mt-1 outline-none py-3 px-5 border border-gray-500 font-semibold rounded-lg' type="text" placeholder='Enter POC Contact' />
 							</div>
 							<div className='my-3'>
 								<label htmlFor='advertiser_pricing' className='font-bold text-gray-600 cursor-pointer'>Advertiser Pricing (Revenue)</label>
@@ -126,6 +138,14 @@ const NewCampaignComponent = ({ setDisplayCampaign }) => {
 									<option value="Item 1" key="Item 1">Item 1</option>
 								</select>
 							</div>
+							<div className='my-3'>
+								<label htmlFor='pocname' className='font-bold text-gray-600 cursor-pointer'>POC Name</label>
+								<input id='pocname' value={formData.POCNAME} onChange={handleChange} name='POCNAME' className='w-full mt-1 outline-none h-12 py-2 px-5 border border-gray-500 font-semibold rounded-lg bg-white' type="text" placeholder='Enter POC Name' />
+							</div>
+							<div className='my-3'>
+								<label htmlFor='pocEmail' className='font-bold text-gray-600 cursor-pointer'>POC Email</label>
+								<input id='pocEmail' value={formData.POCEMAIL} onChange={handleChange} name='POCEMAIL' className='w-full mt-1 outline-none h-12 py-2 px-5 border border-gray-500 font-semibold rounded-lg bg-white' type="text" placeholder='Enter POC Email'/>
+							</div>
 							<div className='my-3 flex justify-between mt-4'>
 								<div className='w-5/12'>
 									<label htmlFor='advertiser_pricing' className='font-bold text-gray-600 cursor-pointer'>Amount</label>
@@ -145,7 +165,11 @@ const NewCampaignComponent = ({ setDisplayCampaign }) => {
 								</div>
 								<div className='w-6/12 hidden'>
 									<label htmlFor='offerCategory' className='font-bold text-gray-600 cursor-pointer'>Offer Category</label>
-									<input id='offerCategory' className='w-full mt-1 outline-none h-12 py-2 px-5 border border-gray-500 font-semibold rounded-lg bg-white' type="text" placeholder='Enter Campaign Name' />
+									<input id='offerCategory' name='offerCategory' value={formData.offer_category} className='w-full mt-1 outline-none h-12 py-2 px-5 border border-gray-500 font-semibold rounded-lg bg-white' type="text" placeholder='Enter Campaign Name' />
+								</div>
+								<div className='w-6/12 hidden'>
+									<label htmlFor='pocName' className='font-bold text-gray-600 cursor-pointer'>POC Name</label>
+									<input id='pocName' name='POCNAME' className='w-full mt-1 outline-none h-12 py-2 px-5 border border-gray-500 font-semibold rounded-lg bg-white' type="text" placeholder='Enter POC Name' />
 								</div>
 							</div>
 							<div className='my-3'>
