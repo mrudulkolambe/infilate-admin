@@ -80,7 +80,7 @@ const CampaignCardViewAndEdit = () => {
 					<div className='w-1/2 h-full p-2'>
 						<div className="py-6 px-4 rounded-xl shadow-lg bg-white border-2 mt-3">
 							<h1 className=' font-bold text-2xl'>Marketing Objective</h1>
-							<p className='font-bold mt-2 text-gray-500'>What is your campaign's goal?</p>
+							<p className='font-bold mt-2 text-gray-500'>What is your campaign&#39;s goal?</p>
 							<input disabled name="marketingObjective" id="" value={data && data.marketingObjective} className='mt-1 p-3 rounded-lg border-2 w-full read-only:bg-gray-100 read-only:cursor-pointer outline-none' />
 							<h1 className='mt-5 font-bold text-2xl'>Targeting</h1>
 							<p className='font-bold mt-2 text-gray-500'>Where is your audience located?</p>
@@ -89,7 +89,7 @@ const CampaignCardViewAndEdit = () => {
 
 						<div className="py-6 px-4 rounded-xl shadow-lg bg-white border-2 mt-10">
 							<h1 className=' font-bold text-2xl'>Budgeting</h1>
-							<p className='text-gray-500 mt-2'>Define the direct impact of your campaign's daily reach by setting your campaign budget</p>
+							<p className='text-gray-500 mt-2'>Define the direct impact of your campaign&#39;s daily reach by setting your campaign budget</p>
 							<p className='font-bold mt-2 text-gray-500'>Daily Budget</p>
 							<input readOnly={readOnly} name="dailyBudget" id="" value={data && data.dailyBudget} className='mt-1 p-3 rounded-lg border-2 w-full read-only:bg-gray-100 read-only:cursor-pointer outline-none placeholder:font-bold' placeholder='Daily Budget' />
 							<p className='font-bold mt-2 text-gray-500'>Cost Per Click (CPC)</p>
