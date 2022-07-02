@@ -7,20 +7,6 @@ import { useAuthContext } from '../context/Auth'
 const Topbar = ({ show, setShow }) => {
 	const router = useRouter()
 	const { user, routes } = useAuthContext()
-	useEffect(() => {
-		let validPaths = []
-		routes && routes.forEach((route) => {
-			validPaths.push(route.path)
-		})
-		validPaths.push('/')
-		validPaths.push('/profile-edit')
-		validPaths.push('/notifications')
-		validPaths.push('/banker-market')
-		validPaths.push('/poc')
-		if (!validPaths.includes(router.pathname)) {
-			router.push(validPaths[0])
-		}
-	}, [router, routes]);
 	return (
 		<>
 			<div className={user ? 'lg:block hidden w-10/12 fixed left-position border-b top-6 h-20 bg-white shadow-lg z-50 Nunito rounded-tr-3xl' : 'hidden'}>
@@ -30,6 +16,7 @@ const Topbar = ({ show, setShow }) => {
 							return <Link href={nav.path} key={nav.path}><p className='cursor-pointer p-3 accent-color py-1 rounded-md'>{nav.tab}</p></Link>
 						})
 					}
+					<a href='https://infilate-banker-market.vercel.app/' className='cursor-pointer p-3 accent-color py-1 rounded-md'>{'Banker Market'}</a>
 				</div>
 			</div>
 

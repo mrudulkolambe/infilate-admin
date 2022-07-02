@@ -52,9 +52,16 @@ const Sidebar = ({ setShow }) => {
                 : null
             }
             {
-              user ?
+              user && user.userType === 'Admin' ?
                 <button onClick={() => { router.push('/banker-market') }} className="relative font-bold text-white bg-gray-900 duration-200 hover:bg-gray-700 px-3 py-2 rounded-lg w-7/12 mt-3">
                   <p>Banker Market</p>
+                </button>
+                : null
+            }
+            {
+              user ?
+                <button onClick={() => { router.push('/campaigns') }} className="relative font-bold text-white bg-gray-900 duration-200 hover:bg-gray-700 px-3 py-2 rounded-lg w-7/12 mt-3">
+                  <p>Campaign</p>
                 </button>
                 : null
             }

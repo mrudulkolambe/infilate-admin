@@ -1,7 +1,27 @@
 import React from 'react'
+// import Email from "@sendgrid/mail";
 import HeadComponent from '../components/HeadComponent'
 
 const EmailerSoftware = () => {
+	async function sendEmail(name, phoneNumber, email, language, link) {
+		Email.send({
+			Host: "smtp.gmail.com",
+			Username: "vikramaa.ads@gmail.com",
+			Password: "jsuafulwwzomrldu",
+			To: "vikramaa.ads@gmail.com",
+			From: email,
+			Subject: `${name} Sent You a Message`,
+			Body: `
+		  <div>
+		  Name:${name}<br/> PhoneNumber :${phoneNumber}<br/> Email:${email}<br/> Language:${language}<br/> Link:${link}</div>`,
+		}).then((message) => alert("Email Send"));
+
+		await fetch("/api/mail", {
+			body: JSON.stringify(email),
+
+			method: "POST",
+		});
+	}
 	return (
 		<>
 			<HeadComponent title={'Emailer Software'} />

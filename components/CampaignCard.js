@@ -1,19 +1,31 @@
-import { deleteDoc, doc } from 'firebase/firestore';
+import { doc, updateDoc } from 'firebase/firestore';
 import React from 'react'
 import { BsTrash } from 'react-icons/bs'
 import { db } from '../context/firebase_config';
 import { useAuthContext } from '../context/Auth';
 
 const CampaignCard = ({ data, setDisplayCard, setDetailsData }) => {
-	const { setAlert } = useAuthContext()
+	const { setAlert, user } = useAuthContext()
 	const handleDelete = async () => {
-		await deleteDoc(doc(db, "campaign_data", data.id))
-			.then(() => {
-				setAlert('Campaign Deleted Successfully!')
-			})
-			.catch(() => {
-				setAlert('Something went wrong!')
-			})
+		if (user.userType === 'Admin') {
+			let confirmModal = window.confirm('Do you want to delete the campaign?')
+			if (confirmModal) {
+				await updateDoc(doc(db, "campaign_data", data.id), {
+					delete: true
+				})
+					.then(() => {
+						setAlert('Campaign Deleted Successfully!')
+					})
+					.catch(() => {
+						setAlert('Something went wrong!')
+					})
+			}
+			else {
+				setAlert('Delete Cancelled')
+			}
+		} else {
+			setAlert('Connect with the admin for deleting the campaign!')
+		}
 	}
 	return (
 		<>

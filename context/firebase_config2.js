@@ -22,6 +22,6 @@ const firebaseConfig = {
 // };
 
 
-const secondaryApp = initializeApp(firebaseConfig)
+const secondaryApp = initializeApp(firebaseConfig, "EmployerInstance")
 export const secondaryAuth = getAuth(secondaryApp)
 export const db2 = getFirestore(secondaryApp);

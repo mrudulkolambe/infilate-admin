@@ -11,7 +11,7 @@ const PaymentWallet = () => {
 	const [paymentData, setPaymentData] = useState();
 	useEffect(() => {
 		if (user) {
-			const q = query(collection(db, "payment"), where("completed", "==", false));
+			const q = query(collection(db, "publisher_database"), where('paymentCompleted', '==', false));
 			const unsubscribe = onSnapshot(q, (querySnapshot) => {
 				const arr = [];
 				querySnapshot.forEach((doc) => {

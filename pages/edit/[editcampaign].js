@@ -1,14 +1,15 @@
-import React, { useState } from 'react'
+import { getStorage } from 'firebase/storage';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react'
+import { useAuthContext } from '../../context/Auth';
 import { MdOutlineClose } from 'react-icons/md'
-import Spinner from './Spinner'
-import { addDoc, collection, doc, updateDoc } from 'firebase/firestore'
-import { db } from '../context/firebase_config'
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { useAuthContext } from '../context/Auth'
+import { doc, onSnapshot, setDoc } from 'firebase/firestore';
+import { db } from '../../context/firebase_config';
+import Spinner from '../../components/Spinner';
 
-const NewCampaignComponent = ({ setDisplayCampaign }) => {
+const EditCampaign = () => {
 	const storage = getStorage();
-	const {user} = useAuthContext()
+	const { user } = useAuthContext()
 	const initialState = {
 		campaign_name: "",
 		advertiser_name: "",
@@ -25,10 +26,22 @@ const NewCampaignComponent = ({ setDisplayCampaign }) => {
 		campaign_category: '',
 		POCNAME: '',
 		POCEMAIL: '',
-		POCPHONE: '',
-		delete: false
+		POCPHONE: ''
 	}
+	const router = useRouter()
+	useEffect(() => {
+		if (user) {
+			const unsub = onSnapshot(doc(db, "campaign_data", router.query.editcampaign), (document) => {
+				setFormData(document.data());
+				setDocId(document.id)
+			});
+			return () => {
+				unsub()
+			};
+		}
+	}, [user]);
 	const [formData, setFormData] = useState(initialState)
+	const [docId, setDocId] = useState("")
 	const [files, setFiles] = useState()
 	const [loading, setLoading] = useState(false)
 	const handleChange = (evt) => {
@@ -39,55 +52,21 @@ const NewCampaignComponent = ({ setDisplayCampaign }) => {
 		});
 	}
 	const handleClick = async () => {
-		if (files && user) {
+		if (user) {
 			setLoading(true)
-			const docRef = await addDoc(collection(db, "campaign_data"), formData)
+			await setDoc(doc(db, "campaign_data", docId), formData)
 				.then((document) => {
 					console.log("first")
 					setLoading(false)
 					setFormData(initialState)
-					handleUpload(document.id)
 				})
 		}
 	}
-	const handleUpload = (id) => {
-		if (user) {
-			const storageRef = ref(storage, `campaign/${id}.jpg`);
-			console.log(storageRef)
-			const uploadTask = uploadBytesResumable(storageRef, files);
-			uploadTask.on('state_changed',
-				(snapshot) => {
-					const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-					console.log('Upload is ' + progress + '% done');
-					switch (snapshot.state) {
-						case 'paused':
-							console.log('Upload is paused');
-							break;
-						case 'running':
-							console.log('Upload is running');
-							break;
-					}
-				},
-				(error) => {
-					// Handle unsuccessful uploads
-				},
-				() => {
-					getDownloadURL(uploadTask.snapshot.ref).then( async (downloadURL) => {
-						const docRef = doc(db, "campaign_data", id);
-						await updateDoc(docRef, {
-							img: downloadURL
-						});
-					});
-				}
-			);
-		}
-	}
-
 	return (
 		<>
 			<div className='lg:block hidden left-position absolute top-24 mt-2 px-10 py-6 Nunito w-10/12 bg-white zindex2000 h-calc-height overflow-scroll'>
 				<h1 className='font-bold text-4xl'>Add Campaign</h1>
-				<div onClick={() => { setDisplayCampaign(false) }} className='cursor-pointer absolute top-4 right-12 w-max p-3 rounded-full hover:bg-gray-100 bg-opacity-25 duration-300'>
+				<div onClick={() => { router.back() }} className='cursor-pointer absolute top-4 right-12 w-max p-3 rounded-full hover:bg-gray-100 bg-opacity-25 duration-300'>
 					<MdOutlineClose />
 				</div>
 				<div className='w-full flex flex-col'>
@@ -145,7 +124,7 @@ const NewCampaignComponent = ({ setDisplayCampaign }) => {
 							</div>
 							<div className='my-3'>
 								<label htmlFor='pocEmail' className='font-bold text-gray-600 cursor-pointer'>POC Email</label>
-								<input id='pocEmail' value={formData.POCEMAIL} onChange={handleChange} name='POCEMAIL' className='w-full mt-1 outline-none h-12 py-2 px-5 border border-gray-500 font-semibold rounded-lg bg-white' type="text" placeholder='Enter POC Email'/>
+								<input id='pocEmail' value={formData.POCEMAIL} onChange={handleChange} name='POCEMAIL' className='w-full mt-1 outline-none h-12 py-2 px-5 border border-gray-500 font-semibold rounded-lg bg-white' type="text" placeholder='Enter POC Email' />
 							</div>
 							<div className='my-3 flex justify-between mt-4'>
 								<div className='w-5/12'>
@@ -198,7 +177,7 @@ const NewCampaignComponent = ({ setDisplayCampaign }) => {
 							<label htmlFor='campaignName' className='font-bold text-gray-600 cursor-pointer'>Traffic Source</label>
 							<textarea name='traffic_source' value={formData.traffic_source} onChange={handleChange} className='resize-y w-full mt-1 outline-none h-44 py-2 px-5 border border-gray-500 font-semibold rounded-lg bg-white' placeholder='Traffic Source'></textarea>
 						</div>
-						<button onClick={handleClick} disabled={loading} className='px-4 py-2 rounded-lg bg-gray-900 text-white font-bold hover:bg-gray-700 duration-200 shadow-lg mt-4 m-auto'>{loading ? <Spinner /> : <p>Submit</p>}</button>
+						<button onClick={handleClick} disabled={loading} className='px-4 py-2 rounded-lg bg-gray-900 text-white font-bold hover:bg-gray-700 duration-200 shadow-lg mt-4 m-auto'>{loading ? <Spinner /> : <p>Update</p>}</button>
 					</div>
 				</div>
 			</div>
@@ -206,4 +185,4 @@ const NewCampaignComponent = ({ setDisplayCampaign }) => {
 	)
 }
 
-export default NewCampaignComponent
+export default EditCampaign

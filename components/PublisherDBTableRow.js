@@ -7,7 +7,7 @@ const PublisherDBTableRow = ({ data }) => {
 	return (
 		<>
 			<PublisherDBDetailsModal display={display} data={data} setDisplay={setDisplay} />
-			<tr className='hover:bg-gray-100 duration-150 py-3 w-full border-b'>
+			<tr className={data && data.kyc === 'Approved' ? 'cursor-pointer bg-green-100 hover:bg-green-200 duration-150 py-3 w-full border-b' : 'cursor-pointer hover:bg-gray-100 duration-150 py-3 w-full border-b'}>
 				<td className='w-2/12 px-2 py-3 whitespace-nowrap text-ellipsis overflow-hidden'>{data && data.id}</td>
 				<td className='w-2/12 px-2 py-3 whitespace-nowrap text-ellipsis overflow-hidden'>{data && data.name}</td>
 				<td className='w-2/12 px-2 py-3 whitespace-nowrap text-ellipsis overflow-hidden'>{data && data.email}</td>

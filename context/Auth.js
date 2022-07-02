@@ -3,7 +3,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { auth, db } from "./firebase_config";
 import { secondaryAuth } from "./firebase_config2";
 import { useRouter } from "next/router";
-import { doc, getDoc, onSnapshot, setDoc } from "firebase/firestore";
+import { collection, doc, getDoc, onSnapshot, query, setDoc } from "firebase/firestore";
 
 
 
@@ -13,8 +13,10 @@ const AuthContext = createContext();
 export function AuthContextProvider({ children }) {
 	const [user, setUser] = useState()
 	const [userAccessData, setUserAccessData] = useState()
+	const [userType, setUserType] = useState()
 	const router = useRouter()
 	const [alert, setAlert] = useState('')
+	const [suggestions, setSuggestions] = useState('')
 	const navs = [
 		{
 			tab: 'Campaign Upload',
@@ -43,7 +45,7 @@ export function AuthContextProvider({ children }) {
 		},
 		{
 			tab: 'Employee Access',
-			path: '/employee-access',
+			path: '/publisher-access',
 			id: 'employee_access'
 		},
 		{
@@ -92,19 +94,61 @@ export function AuthContextProvider({ children }) {
 		return navsItems
 	}
 
+	useEffect(() => {
+		if (user) {
+			const unsub = onSnapshot(doc(db, "employee_details", user.uid), (doc) => {
+				if (doc.exists()) {
+					setUserAccessData(doc.data().type)
+					setUserType(doc.data().userType)
+					user.userType = doc.data().userType
+					user.publishers = doc.data().publishers
+					setUser(user)
+				}
+			})
+			return () => {
+				unsub()
+			};
+		}
+	}, [user]);
+
+	useEffect(() => {
+		onAuthStateChanged(auth, (user) => {
+			if (user) {
+				if (router.pathname === ('/')) {
+					router.push('/campaign-upload')
+				}
+
+				const unsub = onSnapshot(doc(db, "employee_details", user.uid), (doc) => {
+					if (doc.exists()) {
+						setUserAccessData(doc.data().type)
+						setUserType(doc.data().userType)
+						user.userType = doc.data().userType
+						user.publishers = doc.data().publishers
+						setUser(user)
+						let userNavs = []
+						navs.forEach((item) => {
+							if (item.id === 'employee_access') {
+								return
+							} else {
+								userNavs.push(item)
+							}
+						})
+						setRoutes(userNavs)
+					}
+					else {
+						setUserAccessData('Admin')
+						setUserType('Admin')
+						user.userType = 'Admin'
+						setUser(user)
+					}
+				});
+			}
+		});
+	}, []);
 	const handleSignIn = (email, password) => {
 		signInWithEmailAndPassword(auth, email, password)
 			.then((userCredential) => {
 				const user = userCredential.user;
-				setUser(user)
-				const unsub = onSnapshot(doc(db, "employee_details", user.uid), (doc) => {
-					if (doc.data()) {
-						setUserAccessData(doc.data().type)
-					}
-					else {
-						setUserAccessData('Admin')
-					}
-				});
 				router.push('/campaign-upload')
 			})
 			.catch((error) => {
@@ -124,14 +168,14 @@ export function AuthContextProvider({ children }) {
 		await setDoc(doc(db, "POC", "POC"), {
 			name: name,
 			phone: phone,
-			country: email
+			email: email
 		})
-		.then(() => {
-			setAlert('Data Added')
-		})
+			.then(() => {
+				setAlert('Data Added')
+			})
 	}
 	return (
-		<AuthContext.Provider value={{ auth, handleSignIn, user, handleSignOut, userAccessData, routes, alert, setAlert, POCFunc }}>
+		<AuthContext.Provider value={{ auth, handleSignIn, user, handleSignOut, userAccessData, routes, alert, setAlert, POCFunc, suggestions }}>
 			{children}
 		</AuthContext.Provider>
 	);

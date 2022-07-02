@@ -12,7 +12,7 @@ export function CampaignUploadProvider({ children }) {
 
 	useEffect(() => {
 		if (user) {
-			const q = query(collection(db, "campaign_data"));
+			const q = query(collection(db, "campaign_data"), where('delete', '==', false));
 			const unsubscribe = onSnapshot(q, (querySnapshot) => {
 				const data = [];
 				querySnapshot.forEach((doc) => {

@@ -6,9 +6,9 @@ import { db } from '../context/firebase_config'
 
 const PublisherDBDetailsModal = ({ display, setDisplay, data }) => {
 	const handleApprove = async () => {
-		const docRef = doc(db, "publisher_kyc", data && data.id);
+		const docRef = doc(db, "publisher_database", data && data.id);
 		await updateDoc(docRef, {
-			status: 'Approved'
+			kyc: 'Approved'
 		});
 	}
 	return (
@@ -24,7 +24,7 @@ const PublisherDBDetailsModal = ({ display, setDisplay, data }) => {
 						<div className='w-full mt-4 font-bold text-lg'>
 							{data && data.name}
 						</div>
-						<button onClick={handleApprove} className='px-3 py-1 bg-gray-900 text-white font-bold hover:bg-gray-700 duration-200 rounded-lg mt-2'>Approve KYC</button>
+						<button disabled={data && data.kyc === 'Approved' ? true : false} onClick={handleApprove} className='disabled:cursor-not-allowed px-3 py-1 bg-gray-900 text-white font-bold hover:bg-gray-700 duration-200 rounded-lg mt-2'>{ data.kyc === 'Approved' ? 'Approved' : 'Approve KYC'}</button>
 					</div>
 					<div className='w-2/3 px-4'>
 						<div className='text-left w-11/12 mt-2 font-bold text-lg'>
@@ -40,7 +40,7 @@ const PublisherDBDetailsModal = ({ display, setDisplay, data }) => {
 							Aadhaar No.: {data && data.aadhaarcardnumber}
 						</div>
 						<div className='text-left w-11/12 mt-1 font-bold text-lg'>
-							KYC Status.: {data && data.status}
+							KYC Status.: {data && data.kyc}
 						</div>
 					</div>
 				</div>

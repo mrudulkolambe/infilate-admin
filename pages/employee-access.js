@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react'
 import EmployeeAccessSwitch from '../components/EmployeeAccessSwitch';
 import HeadComponent from '../components/HeadComponent';
 import { db2, secondaryAuth } from '../context/firebase_config2'
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
+import { createUserWithEmailAndPassword, onAuthStateChanged, updateProfile } from 'firebase/auth'
 import { doc, setDoc } from 'firebase/firestore';
 import { useAuthContext } from '../context/Auth'
 import Spinner from '../components/Spinner'
 import { useEmployeeAccess } from '../context/employeeAccess';
 import Alert from '../components/Alert';
+import { auth } from '../context/firebase_config';
 
 const EmployeeAccess = () => {
 	const [tabPos, setTabPos] = useState('ad_manager');
@@ -19,7 +20,9 @@ const EmployeeAccess = () => {
 		email: '',
 		password: '',
 		name: '',
-		type: ''
+		type: '',
+		userType: "User",
+		publishers: []
 	}
 	const [userData, setUserData] = useState(initialState)
 
@@ -55,6 +58,21 @@ const EmployeeAccess = () => {
 			});
 
 	}
+
+	useEffect(() => {
+		onAuthStateChanged(secondaryAuth, (user) => {
+			if (user) {
+				// User is signed in, see docs for a list of available properties
+				// https://firebase.google.com/docs/reference/js/firebase.User
+				const uid = user.uid;
+				console.log(user)
+				// ...
+			} else {
+				// User is signed out
+				// ...
+			}
+		});
+	}, []);
 	const filterAccess = (data) => {
 		return data.id === tabPos
 	}
@@ -84,21 +102,21 @@ const EmployeeAccess = () => {
 		<>
 			<HeadComponent title={'Employee Access'} />
 			{/* <Alert show={showAlert} /> */}
-			<div className='left-position absolute top-24 mt-2 px-5 py-6 Nunito w-10/12 h-calc-height overflow-scroll'>
-				<h2 className='text-4xl font-bold'>Employee Access </h2>
-				<div className='flex justify-between px-28 mt-10'>
+			<div className='left-position absolute top-24 mt-2 px-5 py-6 Nunito w-10/12 h-calc-height overflow-scroll flex items-center justify-center flex-col'>
+				<h2 className='text-4xl font-bold text-center '>Employee Access </h2>
+				<div className='flex justify-between px-28 mt-10 hidden'>
 					{
 						tabs.map((tab) => {
 							return <div onClick={() => { setTabPos(tab.id) }} className={tabPos === tab.id ? 'w-44 text-center border rounded-lg border-gray-500 cursor-pointer bg-gray-900 text-white duration-200 font-bold px-2 py-2 mx-2' : 'w-44 text-center border rounded-lg border-gray-500 cursor-pointer hover:bg-gray-200 duration-200 font-bold px-2 py-2 mx-2'} key={tab.id}>{tab.tab}</div>
 						})
 					}
 				</div>
-				<div className='mt-8 px-10'>
+				<div className='mt-8 px-10 hidden'>
 					{
 						<EmployeeAccessSwitch data={employeeAccess && employeeAccess.filter(filterAccess)[0]} id={employeeAccess && employeeAccess.filter(filterAccess)[0] && employeeAccess.filter(filterAccess)[0].id} />
 					}
 				</div>
-				<div className='w-6/12 mt-8'>
+				<div className='w-6/12 mt-8 m-auto'>
 					<div className='flex flex-col items-start mt-3'>
 						<label htmlFor='employeeName' className='font-bold text-gray-600 cursor-pointer'>Employee Name</label>
 						<input id='employeeName' name='name' className='w-full mt-1 outline-none py-3 px-5 border border-gray-500 font-semibold rounded-lg' value={userData.name} onChange={handleChange} type="text" placeholder='John Doe' />

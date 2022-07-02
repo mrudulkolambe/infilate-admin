@@ -12,18 +12,35 @@ export function ReportDataProvider({ children }) {
 
 	useEffect(() => {
 		if (user) {
-			const q = query(collection(db, "campaign_details"));
-			const unsubscribe = onSnapshot(q, (querySnapshot) => {
-				const data = [];
-				querySnapshot.forEach((doc) => {
-					let obj = doc.data()
-					obj.id = doc.id
-					data.push(obj)
+			if (user.userType === 'User') {
+				const q = query(collection(db, "campaign_details"), where('publisher_id', 'in', user && user.publishers));
+				const unsubscribe = onSnapshot(q, (querySnapshot) => {
+					const data = [];
+					querySnapshot.forEach((doc) => {
+						let obj = doc.data()
+						obj.id = doc.id
+						data.push(obj)
+					});
+					setReportData(data)
 				});
-				setReportData(data)
-			});
-			return () => {
-				unsubscribe()
+				return () => {
+					unsubscribe()
+				}
+			}
+			else {
+				const q = query(collection(db, "campaign_details"));
+				const unsubscribe = onSnapshot(q, (querySnapshot) => {
+					const data = [];
+					querySnapshot.forEach((doc) => {
+						let obj = doc.data()
+						obj.id = doc.id
+						data.push(obj)
+					});
+					setReportData(data)
+				});
+				return () => {
+					unsubscribe()
+				}
 			}
 		}
 	}, [user]);

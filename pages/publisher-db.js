@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import PublisherDBTableRow from '../components/PublisherDBTableRow'
 import HeadComponent from '../components/HeadComponent'
 import { useAuthContext } from '../context/Auth'
-import { collection, onSnapshot, query } from 'firebase/firestore'
+import { collection, onSnapshot, query, where } from 'firebase/firestore'
 import { db } from '../context/firebase_config'
 
 const PublisherDatabase = () => {
@@ -10,19 +10,37 @@ const PublisherDatabase = () => {
 	const { user } = useAuthContext()
 	useEffect(() => {
 		if (user) {
-			const q = query(collection(db, "publisher_kyc"));
-			const unsubscribe = onSnapshot(q, (querySnapshot) => {
-				const arr = [];
-				querySnapshot.forEach((doc) => {
-					let newData = doc.data()
-					newData.id = doc.id
-					arr.push(newData);
+			if (user.userType === 'Admin') {
+				const q = query(collection(db, "publisher_database"));
+				const unsubscribe = onSnapshot(q, (querySnapshot) => {
+					const arr = [];
+					querySnapshot.forEach((doc) => {
+						let newData = doc.data()
+						newData.id = doc.id
+						arr.push(newData);
+					});
+					console.log(arr)
+					setData(arr)
 				});
-				setData(arr)
-			});
-			return () => {
-				unsubscribe()
-			};
+				return () => {
+					unsubscribe()
+				};
+			} else {
+				const q = query(collection(db, "publisher_database"), where('uid', 'in', user && user.publishers));
+				const unsubscribe = onSnapshot(q, (querySnapshot) => {
+					const arr = [];
+					querySnapshot.forEach((doc) => {
+						let newData = doc.data()
+						newData.id = doc.id
+						arr.push(newData);
+					});
+					console.log(arr)
+					setData(arr)
+				});
+				return () => {
+					unsubscribe()
+				};
+			}
 		}
 	}, [user]);
 	return (
@@ -45,7 +63,7 @@ const PublisherDatabase = () => {
 						<tbody className='mt-3'>
 							{
 								data && data.map((item) => {
-									return <PublisherDBTableRow key={item.id} data={item} />
+									return <PublisherDBTableRow key={`${item.id}1`} data={item} />
 								})
 							}
 						</tbody>
@@ -70,7 +88,7 @@ const PublisherDatabase = () => {
 						<tbody className='mt-3'>
 							{
 								data && data.map((item) => {
-									return <PublisherDBTableRow key={data.id} data={item} />
+									return <PublisherDBTableRow key={`${item.id}1`} data={item} />
 								})
 							}
 						</tbody>

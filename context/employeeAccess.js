@@ -58,7 +58,7 @@ export function EmployeeAccessProvider({ children }) {
 				unsubscribe()
 			}
 		}else{
-			router.push('/')
+			// router.push('/')
 		}
 	}, [user]);
 
