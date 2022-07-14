@@ -30,7 +30,7 @@ export function AuthContextProvider({ children }) {
 		},
 		{
 			tab: 'Tracking Panel',
-			path: '/tracking-panel',
+			path: 'https://infilatemediagroup296.offer18.com/m/loginhttps://infilatemediagroup296.offer18.com/m/login',
 			id: 'tracking_panel'
 		},
 		{
