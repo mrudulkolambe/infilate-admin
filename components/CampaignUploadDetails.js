@@ -43,7 +43,7 @@ const CampaignUploadDetails = ({ setDisplayCard, data }) => {
 				<div className='flex flex-col mt-6'>
 					<div className='px-2 w-full'>
 						<div className='flex flex-col items-center'>
-							<img className='h-4/6 w-4/6 md:h-3/6 md:w-3/6' src="https://png.pngtree.com/png-clipart/20190520/original/pngtree-vector-users-icon-png-image_4144740.jpg" alt="" />
+							<img className='h-4/6 w-4/6 md:h-3/6 md:w-3/6' src={data && data.img} alt="" />
 							<h1 className='mt-4 text-3xl font-bold text-center'>Python</h1>
 						</div>
 					</div>

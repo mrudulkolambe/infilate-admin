@@ -18,11 +18,29 @@ const ReportManager = () => {
 	const [files2, setFiles2] = useState()
 	const [xlsxData, setXlsxData] = useState()
 	const [xlsxData2, setXlsxData2] = useState()
+	const [searchString, setSearchString] = useState('')
 	const { user, setAlert } = useAuthContext()
 	const [loading, setLoading] = useState(false)
 	const { reportData } = useReportData()
 	const [tab, setTab] = useState(0)
+	const [searchReportData, setSearchReportData] = useState(reportData)
 	const [verificationPendingData, setVerificationPendingData] = useState()
+	const [searchVerificationPendingData, setSearchVerificationPendingData] = useState(verificationPendingData)
+	useEffect(() => {
+		setSearchReportData(reportData)
+	}, [reportData]);
+
+	useEffect(() => {
+		let arr = []
+		reportData && reportData.forEach((data) => {
+			if (data.campaign_id.toLowerCase().includes(searchString.toLowerCase()) || data.publisher_name.toLowerCase().includes(searchString.toLowerCase()) || data.campaign_name.toLowerCase().includes(searchString.toLowerCase()) || data.publisher_id.toLowerCase().includes(searchString.toLowerCase())) {
+				arr.push(data)
+				console.log(data)
+			}
+		})
+		setSearchReportData(arr)
+	}, [searchString]);
+
 	useEffect(() => {
 		if (files) {
 			setLoading(true)
@@ -129,12 +147,11 @@ const ReportManager = () => {
 	}
 
 	useEffect(() => {
-		if (reportData) {
-			let newArr = reportData.filter(handleValidationRequested)
+		if (searchReportData) {
+			let newArr = searchReportData.filter(handleValidationRequested)
 			setVerificationPendingData(newArr)
-			console.log(newArr)
 		}
-	}, [reportData]);
+	}, [searchReportData]);
 	return (
 		<>
 			<HeadComponent title={'Report Manager'} />
@@ -142,7 +159,7 @@ const ReportManager = () => {
 				<div className='flex justify-between items-center px-4'>
 					<h2 className='text-4xl font-bold'>Report</h2>
 					<div className='relative flex items-center border-gray-500 border rounded-lg overflow-hidden'>
-						<input type="text" className='outline-none px-4 py-2 pr-8' placeholder='Search...' />
+						<input onChange={(e) => { setSearchString(e.target.value) }} value={searchString} type="text" className='outline-none px-4 py-2 pr-8' placeholder='Search...' />
 						<BsSearch className='absolute right-2 ml-3' />
 					</div>
 				</div>
@@ -156,8 +173,8 @@ const ReportManager = () => {
 				</div>
 				<div className='mt-10 w-full'>
 					<div>
-						<button onClick={() => {setTab(0)}} className={tab === 0 ? 'font-bold bg-gray-900 text-white px-3 py-1 rounded-l-lg duration-300 border-2 border-gray-900' : 'border-2 border-gray-900 font-bold bg-white text-gray-900 px-3 py-1 duration-300 rounded-l-lg'}>All Reports</button>
-						<button onClick={() => {setTab(1)}} className={tab === 1 ? 'font-bold bg-gray-900 text-white px-3 py-1 rounded-r-lg duration-300 border-2 border-gray-900' : 'border-2 border-gray-900 font-bold bg-white text-gray-900 px-3 py-1 duration-300 rounded-r-lg'}>Validation Pending</button>
+						<button onClick={() => { setTab(0) }} className={tab === 0 ? 'font-bold bg-gray-900 text-white px-3 py-1 rounded-l-lg duration-300 border-2 border-gray-900' : 'border-2 border-gray-900 font-bold bg-white text-gray-900 px-3 py-1 duration-300 rounded-l-lg'}>All Reports</button>
+						<button onClick={() => { setTab(1) }} className={tab === 1 ? 'font-bold bg-gray-900 text-white px-3 py-1 rounded-r-lg duration-300 border-2 border-gray-900' : 'border-2 border-gray-900 font-bold bg-white text-gray-900 px-3 py-1 duration-300 rounded-r-lg'}>Validation Pending</button>
 					</div>
 					<table className='w-full text-left'>
 						<thead>
@@ -174,14 +191,14 @@ const ReportManager = () => {
 						</thead>
 						<tbody className={tab === 0 ? 'mt-3 height-report overflow-auto' : 'hidden'}>
 							{
-								reportData && reportData.map((data, i) => {
+								searchReportData && searchReportData.map((data, i) => {
 									return <ReportManagerTableRow key={i} index={i} data={data} />
 								})
 							}
 						</tbody>
 						<tbody className={tab === 1 ? 'mt-3 height-report overflow-auto' : 'hidden'}>
 							{
-								verificationPendingData && verificationPendingData.map((data, i) => {
+								searchVerificationPendingData && searchVerificationPendingData.map((data, i) => {
 									return <ReportManagerTableRow key={i} index={i} data={data} />
 								})
 							}

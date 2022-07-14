@@ -72,7 +72,7 @@ const Sidebar = ({ setShow }) => {
       <div className='fixed left-0 top-0 px-4 md:px-12 flex items-center justify-between Nunito lg:hidden h-20 bg-red-400 w-full zindex1000'>
         <div className="flex items-center"><FaBars className="mr-4" onClick={() => { setShow(true) }} /><h1 className="text-3xl font-bold">Infilate</h1></div>
         <div className="relative">
-          <img className="h-10 w-10 rounded-full" src="https://png.pngtree.com/png-clipart/20190520/original/pngtree-vector-users-icon-png-image_4144740.jpg" alt="" onClick={() => { showMenu ? setShowMenu(false) : setShowMenu(true) }} />
+          <img className="h-10 w-10 rounded-full" src={user && user.photoURL || "https://png.pngtree.com/png-clipart/20190520/original/pngtree-vector-users-icon-png-image_4144740.jpg"} alt="" onClick={() => { showMenu ? setShowMenu(false) : setShowMenu(true) }} />
           <div className={showMenu ? 'origin-top-right absolute top-full mt-2 rounded-lg shadow-lg right-2/3 w-48 p-3 bg-white scale-100 duration-300' : 'origin-top-right absolute top-full mt-2 rounded-lg shadow-lg right-2/3 w-48 p-3 bg-gray-300 scale-0 duration-300'}>
             {user ? <button className="w-full font-bold py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-700 duration-200 my-2 mt-0">
               Edit

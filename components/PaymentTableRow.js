@@ -6,7 +6,6 @@ import { db } from '../context/firebase_config';
 
 
 const PaymentTableRow = ({ data }) => {
-	console.log(data)
 	const { user, setAlert } = useAuthContext()
 	const [expand, setExpand] = useState(false)
 	const handleApprove = async () => {

@@ -10,7 +10,7 @@ const ReportEditCard = ({ id, data, setDisplay }) => {
 	const [clicks, setClicks] = useState(data && data.clicks)
 	const [conversion, setConversions] = useState(data && data.conversion)
 	const [readyForWithdrawal, setReadyForWithdrawal] = useState(data && data.ready_for_withdrawal)
-
+	console.log(data)
 	const updateFunc = async () => {
 		setLoading(true)
 		if (!data.validation_completed) {
@@ -23,12 +23,12 @@ const ReportEditCard = ({ id, data, setDisplay }) => {
 				status: 'Verification Completed',
 				applied_verification: false
 			})
-				.then(async () => {
+				.then(async (document) => {
 					const docRef = doc(db, "publisher_database", data.publisher_id);
 					await updateDoc(docRef, {
 						advertiserHold: increment(-data.revenue),
 						ready_for_withdrawal: increment(readyForWithdrawal),
-						advertiserHoldData: arrayRemove(document.id)
+						advertiserHoldData: arrayRemove(data.id)
 					})
 						.then(() => {
 							setAlert('Document Updated Successfully!')
