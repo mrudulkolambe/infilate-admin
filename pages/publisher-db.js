@@ -19,7 +19,6 @@ const PublisherDatabase = () => {
 						newData.id = doc.id
 						arr.push(newData);
 					});
-					console.log(arr)
 					setData(arr)
 				});
 				return () => {
@@ -33,8 +32,8 @@ const PublisherDatabase = () => {
 						let newData = doc.data()
 						newData.id = doc.id
 						arr.push(newData);
+						console.log(newData.photoURL)
 					});
-					console.log(arr)
 					setData(arr)
 				});
 				return () => {
@@ -63,6 +62,8 @@ const PublisherDatabase = () => {
 						<tbody className='mt-3'>
 							{
 								data && data.map((item) => {
+									console.log(item);
+									
 									return <PublisherDBTableRow key={`${item.id}1`} data={item} />
 								})
 							}

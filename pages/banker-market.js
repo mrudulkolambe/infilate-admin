@@ -5,6 +5,7 @@ import { collection, query, where, onSnapshot, doc } from "firebase/firestore";
 import { useCampaignUpload } from '../context/campaignUpload';
 import CampaignTrackingLink from '../components/CampaignTrackingLink';
 import BankerCard from '../components/BankerCard';
+import Head from 'next/head';
 
 
 const BankerMarket = () => {
@@ -61,6 +62,9 @@ const BankerMarket = () => {
   }, [currentPublisher]);
   return (
     <>
+    <Head>
+      <title>Infilate | Banker Market</title>
+    </Head>
       <div className='hidden lg:block left-position absolute top-24 mt-2 px-5 py-6 Nunito w-10/12 h-calc-height overflow-scroll'>
         <div className='border rounded-lg overflow-hidden w-full'>
           <button onClick={() => { setTab(0) }} className={tab === 0 ? 'text-white font-bold border-r py-2 text-center w-1/3 duration-200 bg-blue-600' : 'font-bold border-r py-2 text-center w-1/3 duration-200'}>Approve</button>

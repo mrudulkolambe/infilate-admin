@@ -6,10 +6,11 @@ import { MdOutlineClose } from 'react-icons/md'
 import { doc, onSnapshot, setDoc } from 'firebase/firestore';
 import { db } from '../../context/firebase_config';
 import Spinner from '../../components/Spinner';
+import Head from 'next/head'
 
 const EditCampaign = () => {
 	const storage = getStorage();
-	const { user } = useAuthContext()
+	const { user, setAlert } = useAuthContext()
 	const initialState = {
 		campaign_name: "",
 		advertiser_name: "",
@@ -58,14 +59,17 @@ const EditCampaign = () => {
 				.then((document) => {
 					console.log("first")
 					setLoading(false)
-					setFormData(initialState)
+					setAlert('Campaign details updated successfully!')
 				})
 		}
 	}
 	return (
 		<>
+		<Head>
+			<title>Infilate Dashboard - Edit Campaign</title>
+		</Head>
 			<div className='lg:block hidden left-position absolute top-24 mt-2 px-10 py-6 Nunito w-10/12 bg-white zindex2000 h-calc-height overflow-scroll'>
-				<h1 className='font-bold text-4xl'>Add Campaign</h1>
+				<h1 className='font-bold text-4xl'>Edit Campaign</h1>
 				<div onClick={() => { router.back() }} className='cursor-pointer absolute top-4 right-12 w-max p-3 rounded-full hover:bg-gray-100 bg-opacity-25 duration-300'>
 					<MdOutlineClose />
 				</div>
@@ -82,7 +86,13 @@ const EditCampaign = () => {
 							</div>
 							<div className='my-3'>
 								<label htmlFor='category' className='font-bold text-gray-600 cursor-pointer'>Category</label>
-								<input id='category' value={formData.campaign_category} onChange={handleChange} name='campaign_category' className='w-full mt-1 outline-none py-3 px-5 border border-gray-500 font-semibold rounded-lg' type="text" placeholder='Enter Campaign Category' />
+								<select id='category' value={formData.campaign_category} onChange={handleChange} name='campaign_category' className='w-full mt-1 outline-none py-3 px-5 border border-gray-500 font-semibold rounded-lg' type="text" placeholder='Enter Campaign Category' >
+									<option value="">---Select Campaign Category---</option>
+									<option value="Retail (Offline Marketing)">Retail (Offline Marketing)</option>
+									<option value="Cost per Lead Generation">Cost per Lead Generation</option>
+									<option value="Cost per registration">Cost per registration</option>
+									<option value="Cost per Acquisition">Cost per Acquisition</option>
+								</select>
 							</div>
 							<div className='my-3'>
 								<label htmlFor='pocContact' className='font-bold text-gray-600 cursor-pointer'>POC Contact</label>

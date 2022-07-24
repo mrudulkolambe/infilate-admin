@@ -8,7 +8,7 @@ import { useAuthContext } from '../context/Auth'
 
 const NewCampaignComponent = ({ setDisplayCampaign }) => {
 	const storage = getStorage();
-	const {user} = useAuthContext()
+	const { user } = useAuthContext()
 	const initialState = {
 		campaign_name: "",
 		advertiser_name: "",
@@ -26,7 +26,7 @@ const NewCampaignComponent = ({ setDisplayCampaign }) => {
 		POCNAME: '',
 		POCEMAIL: '',
 		POCPHONE: '',
-		delete: false
+		delete: false,
 	}
 	const [formData, setFormData] = useState(initialState)
 	const [files, setFiles] = useState()
@@ -72,7 +72,7 @@ const NewCampaignComponent = ({ setDisplayCampaign }) => {
 					// Handle unsuccessful uploads
 				},
 				() => {
-					getDownloadURL(uploadTask.snapshot.ref).then( async (downloadURL) => {
+					getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
 						const docRef = doc(db, "campaign_data", id);
 						await updateDoc(docRef, {
 							img: downloadURL
@@ -103,7 +103,13 @@ const NewCampaignComponent = ({ setDisplayCampaign }) => {
 							</div>
 							<div className='my-3'>
 								<label htmlFor='category' className='font-bold text-gray-600 cursor-pointer'>Category</label>
-								<input id='category' value={formData.campaign_category} onChange={handleChange} name='campaign_category' className='w-full mt-1 outline-none py-3 px-5 border border-gray-500 font-semibold rounded-lg' type="text" placeholder='Enter Campaign Category' />
+								<select id='category' value={formData.campaign_category} onChange={handleChange} name='campaign_category' className='w-full mt-1 outline-none py-3 px-5 border border-gray-500 font-semibold rounded-lg' type="text" placeholder='Enter Campaign Category' >
+									<option value="">---Select Campaign Category---</option>
+									<option value="Retail (Offline Marketing)">Retail (Offline Marketing)</option>
+									<option value="Cost per Lead Generation">Cost per Lead Generation</option>
+									<option value="Cost per registration">Cost per registration</option>
+									<option value="Cost per Acquisition">Cost per Acquisition</option>
+								</select>
 							</div>
 							<div className='my-3'>
 								<label htmlFor='pocContact' className='font-bold text-gray-600 cursor-pointer'>POC Contact</label>
@@ -145,7 +151,7 @@ const NewCampaignComponent = ({ setDisplayCampaign }) => {
 							</div>
 							<div className='my-3'>
 								<label htmlFor='pocEmail' className='font-bold text-gray-600 cursor-pointer'>POC Email</label>
-								<input id='pocEmail' value={formData.POCEMAIL} onChange={handleChange} name='POCEMAIL' className='w-full mt-1 outline-none h-12 py-2 px-5 border border-gray-500 font-semibold rounded-lg bg-white' type="text" placeholder='Enter POC Email'/>
+								<input id='pocEmail' value={formData.POCEMAIL} onChange={handleChange} name='POCEMAIL' className='w-full mt-1 outline-none h-12 py-2 px-5 border border-gray-500 font-semibold rounded-lg bg-white' type="text" placeholder='Enter POC Email' />
 							</div>
 							<div className='my-3 flex justify-between mt-4'>
 								<div className='w-5/12'>
@@ -223,7 +229,13 @@ const NewCampaignComponent = ({ setDisplayCampaign }) => {
 							</div>
 							<div className='my-3'>
 								<label htmlFor='category' className='font-bold text-gray-600 cursor-pointer'>Category</label>
-								<input id='category' value={formData.campaign_category} onChange={handleChange} name='campaign_category' className='w-full mt-1 outline-none py-3 px-5 border border-gray-500 font-semibold rounded-lg' type="text" placeholder='Enter Campaign Category' />
+								<select id='category' value={formData.campaign_category} onChange={handleChange} name='campaign_category' className='w-full mt-1 outline-none py-3 px-5 border border-gray-500 font-semibold rounded-lg' type="text" placeholder='Enter Campaign Category' >
+									<option value="">---Select Campaign Category---</option>
+									<option value="Retail (Offline Marketing)">Retail (Offline Marketing)</option>
+									<option value="Cost per Lead Generation">Cost per Lead Generation</option>
+									<option value="Cost per registration">Cost per registration</option>
+									<option value="Cost per Acquisition">Cost per Acquisition</option>
+								</select>
 							</div>
 							<div className='my-3'>
 								<label htmlFor='pocContact' className='font-bold text-gray-600 cursor-pointer'>POC Contact</label>
@@ -265,7 +277,7 @@ const NewCampaignComponent = ({ setDisplayCampaign }) => {
 							</div>
 							<div className='my-3'>
 								<label htmlFor='pocEmail' className='font-bold text-gray-600 cursor-pointer'>POC Email</label>
-								<input id='pocEmail' value={formData.POCEMAIL} onChange={handleChange} name='POCEMAIL' className='w-full mt-1 outline-none h-12 py-2 px-5 border border-gray-500 font-semibold rounded-lg bg-white' type="text" placeholder='Enter POC Email'/>
+								<input id='pocEmail' value={formData.POCEMAIL} onChange={handleChange} name='POCEMAIL' className='w-full mt-1 outline-none h-12 py-2 px-5 border border-gray-500 font-semibold rounded-lg bg-white' type="text" placeholder='Enter POC Email' />
 							</div>
 							<div className='my-3 flex justify-between mt-4'>
 								<div className='w-5/12'>

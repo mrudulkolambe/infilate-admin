@@ -12,12 +12,12 @@
 .Montserrat {
   font-family: "Montserrat", sans-serif;
 }
-.left-position {
+.left-position {  
   left: 16.66%;
 }
 ::-webkit-scrollbar {
   width: 0;
-}
+} 
 .calc-height {
   height: calc(100vh - 5rem);
 }

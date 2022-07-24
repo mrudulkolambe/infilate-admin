@@ -4,6 +4,7 @@ import Spinner from '../components/Spinner';
 import Topbar from "../components/Topbar";
 import { useAuthContext } from "../context/Auth";
 import Link from 'next/link'
+import Head from 'next/head';
 
 export default function Poc() {
 	const { POCFunc } = useAuthContext()
@@ -20,6 +21,9 @@ export default function Poc() {
 	}
 	return (
 		<>
+		<Head>
+			<title>Infilate | POC Details</title>
+		</Head>
 			<Sidebar />
 			<Topbar />
 			<div className='hidden lg:flex left-position absolute top-20 px-5 py-6 Nunito w-10/12 justify-center items-center calc-height'>

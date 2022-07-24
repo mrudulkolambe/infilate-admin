@@ -3,6 +3,7 @@ import NotificationComponent from '../components/NotificationComponent'
 import { useAuthContext } from '../context/Auth';
 import { collection, query, where, onSnapshot, orderBy } from "firebase/firestore";
 import { db } from '../context/firebase_config';
+import Head from 'next/head';
 
 const Notifications = () => {
 	const [notificationData, setNotificationData] = useState();
@@ -26,6 +27,9 @@ const Notifications = () => {
 	}, []);
 	return (
 		<>
+		<Head>
+			<title>Infilate | Notifications</title>
+		</Head>
 			<div className='bg-white lg:block hidden left-position absolute top-20 h-calc-height px-10 py-6 Nunito w-10/12 overflow-auto'>
 				<h2 className='my-3 text-4xl font-bold mt-5'>Notifications</h2>
 				{

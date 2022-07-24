@@ -3,6 +3,7 @@ import { useEmployeeAccess } from '../../context/employeeAccessFile'
 import { BiLinkExternal } from 'react-icons/bi'
 import { useRouter } from 'next/router'
 import { BsSearch } from 'react-icons/bs'
+import Head from 'next/head'
 
 const PublisherAccess = () => {
 	const { employeeData } = useEmployeeAccess()
@@ -24,9 +25,12 @@ const PublisherAccess = () => {
 	}, [searchString]);
 	return (
 		<>
+			<Head>
+				<title>Infilate | Publisher Access</title>
+			</Head>
 			<div className='hidden lg:block left-position absolute top-24 mt-2 px-10 py-6 Nunito w-10/12 bg-white z-20'>
 				<div className='relative flex items-center border-gray-500 border rounded-lg overflow-hidden mb-10'>
-					<input onChange={(e) => { setSearchString(e.target.value) }} value={searchString} type="text" className='outline-none px-4 py-2 pr-8' placeholder='Search...' />
+					<input onChange={(e) => { setSearchString(e.target.value) }} value={searchString} type="text" className='outline-none px-4 py-2 pr-8 w-full' placeholder='Search...' />
 					<BsSearch className='absolute right-2 ml-3' />
 				</div>
 				{
@@ -42,7 +46,7 @@ const PublisherAccess = () => {
 			</div>
 			<div className='block lg:hidden absolute top-20 mt-2 px-2 py-6 Nunito w-full bg-white z-20'>
 				<div className='relative flex items-center border-gray-500 border rounded-lg overflow-hidden mb-10'>
-					<input onChange={(e) => { setSearchString(e.target.value) }} value={searchString} type="text" className='outline-none px-4 py-2 pr-8' placeholder='Search...' />
+					<input onChange={(e) => { setSearchString(e.target.value) }} value={searchString} type="text" className='outline-none px-4 py-2 pr-8 w-full' placeholder='Search...' />
 					<BsSearch className='absolute right-2 ml-3' />
 				</div>
 				<div className='overflow-x-scroll w-full'>

@@ -2,6 +2,7 @@ import React from 'react'
 import { GrClose } from 'react-icons/gr'
 import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '../context/firebase_config'
+import {AiOutlineLink} from 'react-icons/ai'
 
 
 const PublisherDBDetailsModal = ({ display, setDisplay, data }) => {
@@ -20,7 +21,7 @@ const PublisherDBDetailsModal = ({ display, setDisplay, data }) => {
 				</div>
 				<div className='flex w-full flex-col lg:flex-row'>
 					<div className='lg:w-1/3 w-11/12 flex items-center justify-center flex-col'>
-						<img className='h-20 w-20 rounded-lg' src="https://png.pngtree.com/png-clipart/20190520/original/pngtree-vector-users-icon-png-image_4144740.jpg" alt="" />
+						<img className='h-20 w-20 rounded-full' src={data && data.photoURL || "https://png.pngtree.com/png-clipart/20190520/original/pngtree-vector-users-icon-png-image_4144740.jpg"} alt="" />
 						<div className='w-full mt-4 font-bold text-lg'>
 							{data && data.name}
 						</div>
@@ -33,11 +34,11 @@ const PublisherDBDetailsModal = ({ display, setDisplay, data }) => {
 						<div className='text-left w-11/12 mt-1 font-bold text-lg'>
 							Phone: {data && data.phone || 'Not Provided'}
 						</div>
-						<div className='text-left w-11/12 mt-1 font-bold text-lg'>
-							Pan Card No.: {data && data.pancardnumber}
+						<div className='text-left w-11/12 mt-1 font-bold text-lg flex items-center'>
+							Pan Card No.: {data && data.pancardnumber} <a href={data && data.panURL} target="_blank" className={data && data.panURL ? "ml-1 cursor-pointer text-blue-500": 'hidden'}><AiOutlineLink/></a>
 						</div>
-						<div className='text-left w-11/12 mt-1 font-bold text-lg'>
-							Aadhaar No.: {data && data.aadhaarcardnumber}
+						<div className='text-left w-11/12 mt-1 font-bold text-lg flex items-center'>
+							Aadhaar No.: {data && data.aadhaarcardnumber} <a href={data && data.aadhaarURL} target="_blank" className={data && data.aadhaarURL ? "ml-1 cursor-pointer text-blue-500": 'hidden'}><AiOutlineLink/></a>
 						</div>
 						<div className='text-left w-11/12 mt-1 font-bold text-lg'>
 							KYC Status.: {data && data.kyc}

@@ -1,4 +1,5 @@
 import { doc, onSnapshot, updateDoc } from 'firebase/firestore'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import Sidebar from '../../components/Sidebar'
@@ -50,11 +51,15 @@ const CampaignCardViewAndEdit = () => {
 	}
 	return (
 		<>
+		<Head>
+			<title>Infilate | {data && data.companyName || "Advertiser Campaign"}</title>
+		</Head>
 			<Sidebar />
 			<Topbar />
 			<div className='bg-white hidden lg:block left-position absolute top-24 mt-2 px-5 py-6 Nunito w-10/12 justify-center items-center h-calc-height overflow-scroll'>
 				<div className='flex justify-between items-center'>
 					<h1 className='font-bold text-4xl'>{'View Campaign'}</h1>
+					<h4 onClick={() => {router.back()}} className='px-3 font-bold cursor-pointer'>Back</h4>
 				</div>
 				<div className='mt-12 px-4 w-full flex justify-between'>
 					<div className='w-1/2 h-full'>
@@ -90,9 +95,9 @@ const CampaignCardViewAndEdit = () => {
 						<div className="py-6 px-4 rounded-xl shadow-lg bg-white border-2 mt-10">
 							<h1 className=' font-bold text-2xl'>Budgeting</h1>
 							<p className='text-gray-500 mt-2'>Define the direct impact of your campaign&#39;s daily reach by setting your campaign budget</p>
-							<p className='font-bold mt-2 text-gray-500'>Daily Budget</p>
+							<p className='font-bold mt-2 text-gray-500'>Total Budget</p>
 							<input readOnly={readOnly} name="dailyBudget" id="" value={data && data.dailyBudget} className='mt-1 p-3 rounded-lg border-2 w-full read-only:bg-gray-100 read-only:cursor-pointer outline-none placeholder:font-bold' placeholder='Daily Budget' />
-							<p className='font-bold mt-2 text-gray-500'>Cost Per Click (CPC)</p>
+							<p className='font-bold mt-2 text-gray-500'>Cost Per Acquisition</p>
 							<input readOnly={readOnly} name="costPerClick" id="" value={data && data.costPerClick} className='mt-1 p-3 rounded-lg border-2 w-full read-only:bg-gray-100 read-only:cursor-pointer outline-none placeholder:font-bold' placeholder='Cost Per Click' />
 						</div>
 					</div>

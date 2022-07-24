@@ -5,6 +5,7 @@ import Spinner from '../components/Spinner'
 import { useRouter } from 'next/router'
 import { updateProfile } from 'firebase/auth'
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import Head from 'next/head'
 
 const ProfileEdit = () => {
 	const storage = getStorage();
@@ -61,6 +62,9 @@ const ProfileEdit = () => {
 	}
 	return (
 		<>
+		<Head>
+			<title>Infilate | Edit Profile</title>
+		</Head>
 			<div className='hidden lg:block left-position absolute top-24 mt-2 px-10 py-6 Nunito w-10/12 bg-white z-20'>
 				<div className='flex items-center cursor-pointer mt-7' onClick={() => { router.back() }}><MdKeyboardArrowLeft className='mr-1 text-3xl' />  Back to Home page</div>
 				<div className='flex mt-6 sticky'>

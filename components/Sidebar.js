@@ -60,7 +60,7 @@ const Sidebar = ({ setShow }) => {
             }
             {
               user ?
-                <button onClick={() => { router.push('/campaigns') }} className="relative font-bold text-white bg-gray-900 duration-200 hover:bg-gray-700 px-3 py-2 rounded-lg w-7/12 mt-3">
+                <button onClick={() => { router.push('/advertiser-campaign/') }} className="relative font-bold text-white bg-gray-900 duration-200 hover:bg-gray-700 px-3 py-2 rounded-lg w-7/12 mt-3">
                   <p>Campaign</p>
                 </button>
                 : null

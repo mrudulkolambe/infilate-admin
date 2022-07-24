@@ -1,4 +1,5 @@
 import { collection, onSnapshot, query } from 'firebase/firestore';
+import Head from 'next/head';
 import React, { useEffect, useState } from 'react'
 import AdvertiserCampaignCard from '../../components/AdvertiserCampaignCard';
 import Sidebar from '../../components/Sidebar';
@@ -10,7 +11,9 @@ import { db } from '../../context/firebase_config';
 const Campaigns = () => {
 	const { user } = useAuthContext()
 	const [campaignData, setCampaignData] = useState()
+
 	useEffect(() => {
+		console.log(user);
 		if (user) {
 			const q = query(collection(db, "advertiser_campaigns"));
 			const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -20,6 +23,7 @@ const Campaigns = () => {
 					obj.id = doc.id
 					arr.push(obj);
 				});
+				console.log(arr);
 				setCampaignData(arr)
 			});
 			return () => {
@@ -29,6 +33,9 @@ const Campaigns = () => {
 	}, [user]);
 	return (
 		<>
+			<Head>
+				<title>Infilate | Advertiser Campaigns</title>
+			</Head>
 			<Sidebar />
 			<Topbar />
 			<div className='bg-white hidden lg:block left-position absolute top-24 mt-2 px-5 py-6 Nunito w-10/12 justify-center items-center h-calc-height'>

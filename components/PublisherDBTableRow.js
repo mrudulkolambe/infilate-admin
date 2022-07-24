@@ -14,7 +14,7 @@ const PublisherDBTableRow = ({ data }) => {
 				<td className='w-2/12 px-2 py-3 whitespace-nowrap text-ellipsis overflow-hidden'>{data && data.phone || 'Not Submitted'}</td>
 				<td className='w-2/12 px-2 py-3 whitespace-nowrap text-ellipsis overflow-hidden'>
 					<div className='w-full h-full flex justify-center'>
-						<img src="https://png.pngtree.com/png-clipart/20190520/original/pngtree-vector-users-icon-png-image_4144740.jpg" className='aspect-square h-12 rounded-lg' alt="" />
+						<img src={data && data.photoURL || "https://png.pngtree.com/png-clipart/20190520/original/pngtree-vector-users-icon-png-image_4144740.jpg"} className='aspect-square h-12 rounded-full' alt="" />
 					</div>
 				</td>
 				<td className='w-2/12 px-2 py-3 whitespace-nowrap text-ellipsis overflow-hidden'>
