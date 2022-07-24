@@ -35,10 +35,10 @@ const PublisherDBDetailsModal = ({ display, setDisplay, data }) => {
 							Phone: {data && data.phone || 'Not Provided'}
 						</div>
 						<div className='text-left w-11/12 mt-1 font-bold text-lg flex items-center'>
-							Pan Card No.: {data && data.pancardnumber} <a href={data && data.panURL} target="_blank" className={data && data.panURL ? "ml-1 cursor-pointer text-blue-500": 'hidden'}><AiOutlineLink/></a>
+							Pan Card No.: {data && data.pancardnumber} <a href={data && data.panURL} rel="noreferrer" target="_blank" className={data && data.panURL ? "ml-1 cursor-pointer text-blue-500": 'hidden'}><AiOutlineLink/></a>
 						</div>
 						<div className='text-left w-11/12 mt-1 font-bold text-lg flex items-center'>
-							Aadhaar No.: {data && data.aadhaarcardnumber} <a href={data && data.aadhaarURL} target="_blank" className={data && data.aadhaarURL ? "ml-1 cursor-pointer text-blue-500": 'hidden'}><AiOutlineLink/></a>
+							Aadhaar No.: {data && data.aadhaarcardnumber} <a href={data && data.aadhaarURL} rel="noreferrer" target="_blank" className={data && data.aadhaarURL ? "ml-1 cursor-pointer text-blue-500": 'hidden'}><AiOutlineLink/></a>
 						</div>
 						<div className='text-left w-11/12 mt-1 font-bold text-lg'>
 							KYC Status.: {data && data.kyc}
